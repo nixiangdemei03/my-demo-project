@@ -6,3 +6,6 @@ venv/
 .venv/
 dist/
 .claude/
+backend/
+frontend/
+模板/
