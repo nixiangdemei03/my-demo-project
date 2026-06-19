@@ -10,7 +10,7 @@ Claude Code: 2.1.179
 GitHub CLI:  2.94.0
 
 === 可选工具 ===
-codragraph:  2.1.6           ✅ 已安装
-superpowers: 5.1.0           ✅ 已安装 (plugin)
-gstack:      GNU gstack 16.3 ⚠️ 已安装 (待确认是否为浏览器版)
-spec-kit:    未安装           ❌
+codragraph:  2.1.6              ✅ 已安装
+superpowers: 5.1.0              ✅ 已安装 (plugin)
+gstack-browser: 已安装           ✅ npm i -g gstack-browser + playwright chromium
+spec-kit (specify): 0.11.3.dev0 ✅ uv tool install
