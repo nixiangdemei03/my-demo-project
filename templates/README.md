@@ -16,14 +16,17 @@ text
 '''
 
 '''
-![alt text](image-1.png)
+
 text
 2026-06-12-version-screenshot.png
 '''
 
- '''
- ![alt text](image-2.png)
- text
- 2026-06-12-tools.png
- '''
 
+示例：
+
+```text
+2026-05-21-student-form-success.png
+2026-05-21-login-error-state.png
+```
+
+不要上传包含真实学生隐私、付款信息、secret 或完整付费题库内容的截图。

@@ -6,13 +6,3 @@ venv/
 .venv/
 dist/
 .claude/
-
-# Old directories (locked by IDE, delete when possible)
-/backend/
-/frontend/
-/模板/
-/src/
-/data/
-/scripts/
-/makedown/
-/技术使用说明文件/

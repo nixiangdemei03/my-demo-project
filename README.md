@@ -1,72 +1,66 @@
-# RBT — 悉尼留学生地图服务平台
+# APEX — Auto Parts EXport Platform
 
-> 一张地图，连接悉尼留学生的美食与生活服务。
+> B2B platform connecting Chinese auto parts suppliers with global buyers.
 
-## 目标用户
+## Who is it for?
 
-在悉尼生活的中国留学生，需要快速找到可靠的美食去处和生活服务（搬家、维修、接机等），并信任来自留学生社区的真实评价。
+- **Suppliers** — Chinese auto parts manufacturers looking to sell overseas without building their own English website
+- **Buyers** — Importers, wholesalers, and repair chains from SEA, Middle East, South America, Africa seeking competitive Chinese parts
 
-## v1.0 核心功能
+## v1.0 Features
 
-| 功能 | 描述 |
-|------|------|
-| 🗺️ **美食地图** | Mapbox 交互地图，悉尼美食地点标注，按菜系/评分/距离筛选，留学生真实评价 |
-| 🛠️ **服务市场** | 发布生活服务需求（搬家、维修电脑、接机等），或浏览已发布的服务并接单 |
-| 👤 **用户社区** | 留学生身份认证、个人评价记录、信用评分体系 |
-| 📊 **数据看板** | 用户使用频次、商家点击量埋点统计，ECharts 可视化，积累数据用于商家合作谈判 |
+| Feature | Description |
+|---------|-------------|
+| 📦 **Product Catalog** | Browse by category, search by OEM number, detailed specs & multi-image gallery |
+| 👤 **User System** | Dual-role registration (supplier/buyer), JWT auth, email verification |
+| 📋 **Order Management** | Full lifecycle: pending → confirmed → shipped → delivered |
+| 🚢 **Freight Integration** | Supplier links order to shipping company + tracking number; buyer tracks in real-time |
+| 🖼️ **Image Management** | Drag-and-drop multi-upload to Cloudflare R2, sorting, cover selection |
 
-## 技术栈
+## Tech Stack
 
-- **Backend**: FastAPI + PostgreSQL
-- **Frontend**: React + Vite
-- **Map**: Mapbox GL JS
-- **Charts**: ECharts
+- **Backend**: FastAPI + PostgreSQL + SQLAlchemy + Alembic
+- **Frontend**: React + Vite + React Router v6
+- **Storage**: Cloudflare R2 (S3-compatible)
+- **Auth**: JWT (bcrypt + python-jose)
 - **Deploy**: Cloudflare Pages + Workers
 
-## 快速开始
+## Quick Start
 
 ```bash
-# 克隆仓库
-git clone git@github.com:nixiangdemei03/my-demo-project.git
+# Clone
+git clone https://github.com/nixiangdemei03/my-demo-project.git
 cd my-demo-project
 
-# 安装依赖
-cd backend && pip install -r requirements.txt
-cd ../frontend && npm install
-cd ..
+# Backend
+cd projects/apex-app/backend
+pip install -r requirements.txt
+uvicorn app.main:app --reload --port 8000
 
-# 本地运行
-make dev
-
-# 运行测试
-make test
-
-# 部署
-make deploy
+# Frontend
+cd ../frontend
+npm install
+npm run dev
 ```
 
-## 项目结构
+## Project Structure
 
 ```
-RBT/
-├── backend/          FastAPI 后端
-├── frontend/         React 前端
-├── docs/             共享文档
-├── makedown/         Markdown 文档
-├── 模板/             模板文件
-└── .github/          CI 配置（计划中）
+├── projects/apex-app/
+│   ├── backend/         FastAPI backend
+│   └── frontend/        React frontend
+├── agents/              Agent definitions
+├── docs/                PRD & technical docs
+├── templates/           Templates
+└── evidence/            Screenshots & logs
 ```
 
-## 开发约定
+## Conventions
 
-- Conventional Commits（`feat:`, `fix:`, `docs:`, `chore:`）
-- 所有 API 端点需包含测试
-- PR 合并前需 CI 通过
+- Conventional Commits (`feat:`, `fix:`, `docs:`, `chore:`)
+- All endpoints require tests
+- PRs need green CI before merge
 
-## 版本
+## Status
 
-**v0** — 项目脚手架搭建与核心功能规划阶段。
-
-## 许可
-
-MIT
+**v0** — PRD complete, scaffolding in progress.

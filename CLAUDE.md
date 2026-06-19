@@ -1,44 +1,42 @@
-# Project: RBT — 留学生地图服务平台
+# Project: APEX — Auto Parts EXport Platform
 
 ## What this is
-面向悉尼留学生的地图服务平台。留学生可以直接在地图上查找美食地址、浏览真实评价，也可以在平台上发布或接单搬家、维修电脑等生活服务。后端埋点追踪用户行为和商家点击量，积累数据后用于商业合作谈判。
+面向海外汽车配件采购商与中国供应商的 B2B 平台。供应商发布产品（原价、售价、图片、规格），采购商浏览下单，订单对接货运公司实现全程追踪。
 
-## Target platforms
-- 🌐 Web（React SPA）— 主要入口
-- 📱 PWA — 可安装到手机桌面，离线可用，推送通知
+## Target users
+- 🏭 **Supplier** — 国内汽配厂/贸易商，中文优先，需要快速上架产品
+- 🌍 **Buyer** — 海外汽配批发商/分销商，英文优先，需要找到高性价比货源
+- 🔧 **Admin** — 平台运营，审核供应商，管理内容
 
-## Core features
-- 🗺️ **美食地图** — Mapbox 交互地图，悉尼美食地点标注，留学生真实评价
-- 🛠️ **服务市场** — 发布需求 / 接单（搬家、维修电脑、接机等）
-- 👤 **用户系统** — 留学生身份认证、评价记录
-- 📊 **数据看板** — 用户使用次数、商家点击量统计，可视化图表，支撑商业合作
+## Core features (v1.0)
+- 📦 **产品目录** — 分类浏览、关键词搜索、OEM 编号查询、多图展示
+- 👤 **用户系统** — 双角色注册（供应商/采购商）、JWT 认证、邮箱验证
+- 📋 **订单管理** — 下单→确认→发货→收货 全流程，状态时间线
+- 🚢 **货运对接** — 供应商发货时选货运公司+填运单号，采购商追踪物流
+- 🖼️ **图片管理** — 多图上传、排序、封面设置，存储至 Cloudflare R2
 
 ## Tech stack
-- Backend: FastAPI + PostgreSQL
-- Frontend: React + Vite
-- Map: Mapbox GL JS
-- Charts: ECharts / Chart.js
+- Backend: FastAPI + PostgreSQL + SQLAlchemy + Alembic
+- Frontend: React + Vite + React Router v6
+- Storage: Cloudflare R2 (product images)
+- Auth: JWT (python-jose + passlib/bcrypt)
 - Deploy: Cloudflare Pages + Workers
 
-## Data tracking
-- 用户维度：DAU、使用次数、活跃时段
-- 商家维度：详情页点击量、评价数、收藏数
-- 埋点方案：后端 API 层记录 + 前端事件上报
-- 数据看板：`/admin/dashboard` 独立页面，仅内部访问
-
 ## Project structure
-- `backend/` - FastAPI app
-- `frontend/` - React app
-- `docs/` - shared docs
-- `模板/` - templates
-- `weekly-report/` - 周报
+- `projects/apex-app/` — 主项目（backend + frontend）
+- `agents/` — 专用 Agent 定义（backend/frontend/devops/reviewer/reporter）
+- `docs/` — PRD + 技术设计 + API 文档
+- `templates/` — 模板文件
+- `evidence/` — 截图 + 日志
+- `weekly-report/` — 周报
 
 ## Commands
-- `make dev` - run all locally
-- `make test` - run all tests
-- `make deploy` - deploy to Cloudflare
+- `make dev` — 同时启动前后端
+- `make test` — 运行全部测试
+- `make deploy` — 部署到 Cloudflare
 
 ## Conventions
 - Conventional Commits (feat:, fix:, docs:, chore:)
 - All endpoints require tests
 - PRs need green CI before merge
+- Variables/functions in English, comments in Chinese
