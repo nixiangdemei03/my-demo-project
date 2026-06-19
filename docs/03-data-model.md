@@ -66,7 +66,10 @@ users 1──N supplier_documents
 | unit_price | DECIMAL(12,2) | 下单时单价 |
 | total_price | DECIMAL(12,2) | |
 | currency | VARCHAR(3) | 默认 USD |
-| status | VARCHAR(20) | pending→confirmed→shipped→delivered→cancelled |
+| status | VARCHAR(20) | pending→confirmed→paid→shipped→delivered→cancelled |
+| payment_status | VARCHAR(20) | unpaid / paid / verified，默认 unpaid |
+| cancel_reason | VARCHAR(100) | supplier_rejected / buyer_cancelled / other |
+| cancel_note | TEXT | 取消原因说明 |
 | notes | TEXT | |
 | created_at | TIMESTAMPTZ | |
 | updated_at | TIMESTAMPTZ | |
@@ -104,9 +107,36 @@ users 1──N supplier_documents
 | source | VARCHAR(20) | manual / api |
 
 ### 辅助表
-- `categories` — 产品类别树（name_zh, name_en, parent_id）
+- `categories` — 产品类别树（name_zh, name_en, parent_id），按汽配行业标准树组织
 - `product_images` — 产品图片（product_id, image_url, sort_order, is_cover）
+- `product_vehicle_fits` — **P0** 车型适配（product_id, make, model, year_start, year_end, engine, vin_pattern）
 - `order_timeline` — 订单状态变更记录
-- `supplier_documents` — 供应商资质文件
+- `supplier_documents` — 供应商资质文件（supplier_id, doc_type, file_url, ocr_data JSONB, verify_status, verified_at）
 - `inquiries` — 询盘消息
 - `refresh_tokens` — JWT Refresh Token
+
+### supplier_documents（资质文件）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID PK | |
+| supplier_id | UUID FK → users | |
+| doc_type | VARCHAR(50) | business_license / export_license / certificate / store_photo |
+| file_url | VARCHAR(500) | |
+| ocr_data | JSONB | OCR 提取：{"tax_id":"...", "company_name":"...", "valid_until":"..."} |
+| verify_status | VARCHAR(20) | pending / matched / mismatch / manual_review |
+| verified_at | TIMESTAMPTZ | |
+| uploaded_at | TIMESTAMPTZ | |
+
+### product_vehicle_fits（车型适配）— P0
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID PK | |
+| product_id | UUID FK → products | |
+| make | VARCHAR(100) | 品牌（Toyota） |
+| model | VARCHAR(100) | 车型（Hilux） |
+| year_start | INT | 起始年份 |
+| year_end | INT | 截止年份 |
+| engine | VARCHAR(100) | 发动机型号（1GD-FTV） |
+| vin_pattern | VARCHAR(50) | VIN 匹配模式（如 JTELV71J*） |

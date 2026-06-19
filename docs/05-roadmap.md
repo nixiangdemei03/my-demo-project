@@ -5,9 +5,11 @@
 - [P0] 项目脚手架：FastAPI + React + Vite，跑通 hello-world
 - [P0] PostgreSQL + SQLAlchemy + Alembic 配置
 - [P0] 用户注册/登录 API（JWT + bcrypt + 邮箱验证）
-- [P0] 产品 CRUD API（含图片上传至 Cloudflare R2）
-- [P0] 产品分类 API
-- [P0] 前端：首页、产品目录、产品详情页
+- [P0] 产品 CRUD API（含图片上传至 Cloudflare R2 + 车型适配绑定）
+- [P0] 产品分类 API（汽配行业标准类别树）
+- [P0] **搜索系统**：VIN 解析 + OEM/文字搜索 + 车型浏览三合一
+- [P0] 供应商资质 OCR（营业执照税号自动验证）
+- [P0] 前端：首页（搜索入口）、产品目录、产品详情、供应商详情页
 - [P0] 前端：登录/注册页面
 - [P0] 前端：供应商产品管理页（添加/编辑/列表）
 

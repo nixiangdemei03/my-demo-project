@@ -30,7 +30,36 @@
 | POST | `/api/products/:id/images` | 上传图片 | supplier (本人) |
 | DELETE | `/api/products/:id/images/:img_id` | 删除图片 | supplier (本人) |
 
-**筛选参数**: `?q=关键词&category_id=X&price_min=X&price_max=X&supplier_id=X&page=1&page_size=20`
+**筛选参数**: `?q=关键词&oem=OEM编号&category_id=X&make=Toyota&model=Hilux&year=2020&price_min=X&price_max=X&supplier_id=X&page=1&page_size=20`
+
+### 搜索端点 — `/api/search`
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|------|------|------|:--:|
+| POST | `/api/search/vin` | 车架号搜索：输入 VIN，返回适配配件列表 | - |
+| GET | `/api/search` | 文字搜索 + 车型浏览合并端点 | - |
+
+**VIN 搜索请求**:
+```json
+{"vin": "JTELV71J800012345"}
+```
+
+**VIN 搜索响应**:
+```json
+{
+  "vehicle": {"make":"Toyota","model":"Land Cruiser Prado","year":2008,"engine":"1GR-FE"},
+  "confidence": "high",
+  "products": [...]
+}
+```
+
+**文字/车型搜索参数**: `?q=刹车片&make=Toyota&model=Hilux&year=2020&category_id=X&oem=04465-0K090`
+
+### 供应商 — `/api/suppliers`
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|------|------|------|:--:|
+| GET | `/api/suppliers/:id` | 供应商详情页（公司信息、资质缩略图、产品数、响应率） | - |
 
 ## Orders — `/api/orders`
 
