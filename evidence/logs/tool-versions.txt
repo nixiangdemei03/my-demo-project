@@ -1,0 +1,16 @@
+# 工具版本记录 — W1 验收证据
+# 日期: 2026-06-18
+
+=== 核心 6 工具 ===
+Node.js:  v24.16.0
+npm:      11.13.0
+Python:   3.14.5
+Git:      2.54.0.windows.1
+Claude Code: 2.1.179
+GitHub CLI:  2.94.0
+
+=== 可选工具 ===
+codragraph:  2.1.6           ✅ 已安装
+superpowers: 5.1.0           ✅ 已安装 (plugin)
+gstack:      GNU gstack 16.3 ⚠️ 已安装 (待确认是否为浏览器版)
+spec-kit:    未安装           ❌
