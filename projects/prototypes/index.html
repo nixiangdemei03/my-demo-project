@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX Prototypes — Wireframe Index</title>
+<link rel="stylesheet" href="shared/wireframe.css">
+<style>
+  .role-section { margin-bottom: 32px; }
+  .page-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+  .page-item {
+    border: 1px dashed var(--c-border);
+    padding: 12px var(--gap);
+    text-decoration: none; color: var(--c-text);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .page-item:hover { border-style: solid; background: var(--c-bg-muted); }
+  .page-item .story-tag { font-size: 10px; color: var(--c-text-muted); }
+
+  /* ---- Lang Switcher ---- */
+  .lang-switcher {
+    position: fixed; top: 12px; right: 16px; z-index: 999;
+    display: flex; gap: 0; border: 2px solid var(--c-accent);
+    border-radius: 2px; overflow: hidden; font-size: 12px;
+  }
+  .lang-switcher button {
+    padding: 4px 12px; border: none; cursor: pointer;
+    background: var(--c-bg); color: var(--c-text-muted);
+    font-family: inherit; font-size: inherit;
+  }
+  .lang-switcher button.active {
+    background: var(--c-accent); color: #fff; font-weight: 600;
+  }
+  .lang-switcher button:not(.active):hover {
+    background: var(--c-bg-muted);
+  }
+
+  /* show/hide by lang */
+  [lang] .zh { display: inline; }
+  [lang] .en { display: none; }
+  html[lang="en"] .zh { display: none; }
+  html[lang="en"] .en { display: inline; }
+</style>
+</head>
+<body>
+
+<!-- ===== Lang Switcher ===== -->
+<div class="lang-switcher">
+  <button id="btn-zh" class="active" onclick="switchLang('zh-CN')">中文</button>
+  <button id="btn-en" onclick="switchLang('en')">EN</button>
+</div>
+
+<h1>APEX — <span class="zh">低保真原型线框图</span><span class="en">Wireframe Prototypes</span> v0.1</h1>
+<small class="muted">
+  <span class="zh">低保真线框图 · 覆盖 28 条用户故事 · 灰度无装饰 · 表达布局与流程</span>
+  <span class="en">Low-fidelity wireframes · 28 user stories covered · Grayscale, no decoration · Layout & flow only</span>
+</small>
+
+<!-- ============ Buyer ============ -->
+<div class="role-section" style="margin-top:32px">
+  <h2>🌍 <span class="zh">Buyer — 采购商侧（核心路径：搜索→下单→追踪）</span><span class="en">Buyer — Search → Order → Tracking</span></h2>
+  <div class="page-list">
+    <a class="page-item" href="buyer/01-homepage.html">
+      <span>01 · Homepage</span>
+      <span class="story-tag"><span class="zh">BUY-02/09/10/11 搜索入口</span><span class="en">BUY-02/09/10/11 Search Entry</span></span>
+    </a>
+    <a class="page-item" href="buyer/02-catalog.html">
+      <span>02 · Product Catalog</span>
+      <span class="story-tag"><span class="zh">BUY-02 浏览筛选</span><span class="en">BUY-02 Browse & Filter</span></span>
+    </a>
+    <a class="page-item" href="buyer/03-product-detail.html">
+      <span>03 · Product Detail</span>
+      <span class="story-tag"><span class="zh">BUY-03/04/12 详情+询盘</span><span class="en">BUY-03/04/12 Detail + Inquiry</span></span>
+    </a>
+    <a class="page-item" href="buyer/04-vin-search.html">
+      <span>04 · VIN Search</span>
+      <span class="story-tag"><span class="zh">BUY-09 车架号搜索</span><span class="en">BUY-09 VIN Lookup</span></span>
+    </a>
+    <a class="page-item" href="buyer/05-login.html">
+      <span>05 · Login</span>
+      <span class="story-tag"><span class="zh">BUY-01 登录</span><span class="en">BUY-01 Sign In</span></span>
+    </a>
+    <a class="page-item" href="buyer/06-register.html">
+      <span>06 · Register</span>
+      <span class="story-tag"><span class="zh">BUY-01 注册</span><span class="en">BUY-01 Sign Up</span></span>
+    </a>
+    <a class="page-item" href="buyer/07-dashboard.html">
+      <span>07 · Buyer Dashboard</span>
+      <span class="story-tag"><span class="zh">BUY-05/06/07 订单+追踪</span><span class="en">BUY-05/06/07 Orders + Tracking</span></span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ Supplier ============ -->
+<div class="role-section">
+  <h2>🏭 <span class="zh">Supplier — 供应商侧</span><span class="en">Supplier — Product & Order Management</span></h2>
+  <div class="page-list">
+    <a class="page-item" href="supplier/01-dashboard.html">
+      <span>01 · Supplier Dashboard</span>
+      <span class="story-tag"><span class="zh">SUP-04/08 工作台概览</span><span class="en">SUP-04/08 Overview</span></span>
+    </a>
+    <a class="page-item" href="supplier/02-product-form.html">
+      <span>02 · Product Form</span>
+      <span class="story-tag"><span class="zh">SUP-02/03/10 添加/编辑产品</span><span class="en">SUP-02/03/10 Add/Edit Product</span></span>
+    </a>
+    <a class="page-item" href="supplier/03-order-management.html">
+      <span>03 · Order Management</span>
+      <span class="story-tag"><span class="zh">SUP-04/05 订单确认+发货</span><span class="en">SUP-04/05 Confirm + Ship</span></span>
+    </a>
+    <a class="page-item" href="supplier/04-profile.html">
+      <span>04 · Supplier Profile</span>
+      <span class="story-tag"><span class="zh">SUP-09 主页编辑</span><span class="en">SUP-09 Profile Editor</span></span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ Admin ============ -->
+<div class="role-section">
+  <h2>🔧 <span class="zh">Admin — 管理后台</span><span class="en">Admin — Back Office</span></h2>
+  <div class="page-list">
+    <a class="page-item" href="admin/01-dashboard.html">
+      <span>01 · Admin Dashboard</span>
+      <span class="story-tag"><span class="zh">ADM-04 平台统计</span><span class="en">ADM-04 Platform Stats</span></span>
+    </a>
+    <a class="page-item" href="admin/02-supplier-review.html">
+      <span>02 · Supplier Review</span>
+      <span class="story-tag"><span class="zh">ADM-01 供应商资质审核</span><span class="en">ADM-01 Supplier Verification</span></span>
+    </a>
+  </div>
+</div>
+
+<!-- ============ Coverage ============ -->
+<div class="box box-muted" style="margin-top:40px">
+  <h3>📋 <span class="zh">PRD 故事覆盖</span><span class="en">PRD Story Coverage</span></h3>
+  <table>
+    <tr><th><span class="zh">角色</span><span class="en">Role</span></th><th><span class="zh">故事数</span><span class="en">Stories</span></th><th><span class="zh">覆盖</span><span class="en">Covered</span></th><th><span class="zh">未覆盖</span><span class="en">Missing</span></th></tr>
+    <tr><td>Supplier</td><td>10</td><td>SUP-01~10</td><td>—</td></tr>
+    <tr><td>Buyer</td><td>12</td><td>BUY-01~12</td><td>—</td></tr>
+    <tr><td>Admin</td><td>6</td><td>ADM-01~06</td><td>—</td></tr>
+  </table>
+  <p class="muted" style="margin-top:8px">
+    <span class="zh">* 注册/登录为共享页面，两端复用；Admin 统计页覆盖 ADM-04/05/06</span>
+    <span class="en">* Login/Register shared by all roles; Admin dashboard covers ADM-04/05/06</span>
+  </p>
+</div>
+
+<div class="prototype-note">APEX Wireframe v0.1 — grayscale, no decoration</div>
+
+<script>
+  function switchLang(lang) {
+    document.documentElement.lang = lang;
+    document.getElementById('btn-zh').classList.toggle('active', lang === 'zh-CN');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    try { localStorage.setItem('apex-proto-lang', lang); } catch(e) {}
+  }
+  // restore saved preference
+  (function() {
+    var saved = 'zh-CN';
+    try { saved = localStorage.getItem('apex-proto-lang') || 'zh-CN'; } catch(e) {}
+    switchLang(saved);
+  })();
+</script>
+</body>
+</html>

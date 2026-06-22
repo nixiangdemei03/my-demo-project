@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Homepage [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<!-- ===== Topbar ===== -->
+<div class="topbar">
+  <span class="logo">APEX</span>
+  <nav>
+    <a href="#">Catalog</a>
+    <a href="#">VIN Lookup</a>
+    <a href="../buyer/05-login.html">Log in</a>
+    <a href="../buyer/06-register.html" class="btn btn-primary btn-sm">Sign up</a>
+  </nav>
+</div>
+
+<!-- ===== Hero / Search ===== -->
+<div class="box box-muted" style="padding:48px var(--gap); text-align:center; margin-bottom:24px">
+  <h1 style="font-size:24px">Find Auto Parts Direct from China</h1>
+  <p class="muted" style="margin:8px 0 24px">
+    Search by VIN, OEM number, or browse by vehicle — connect directly with verified suppliers
+  </p>
+
+  <!-- Three search entry points -->
+  <div class="row" style="max-width:800px; margin:0 auto">
+    <!-- VIN Search -->
+    <div class="col box" style="text-align:left">
+      <h3>🔍 Search by VIN</h3>
+      <p class="muted" style="margin:4px 0 8px">Paste your 17-character VIN to find matching parts</p>
+      <div class="form-group">
+        <input type="text" placeholder="e.g. JTEHT05JX02114563" style="font-family:monospace">
+      </div>
+      <a href="../buyer/04-vin-search.html" class="btn btn-primary btn-block">Search by VIN</a>
+    </div>
+
+    <!-- OEM Search -->
+    <div class="col box" style="text-align:left">
+      <h3>📦 Search by OEM</h3>
+      <p class="muted" style="margin:4px 0 8px">Enter OEM part number or keyword</p>
+      <div class="form-group">
+        <input type="text" placeholder="e.g. 90915-YZZD2 or 'brake pad'">
+      </div>
+      <a href="../buyer/02-catalog.html" class="btn btn-primary btn-block">Search Parts</a>
+    </div>
+
+    <!-- Vehicle Browse -->
+    <div class="col box" style="text-align:left">
+      <h3>🚗 Browse by Vehicle</h3>
+      <p class="muted" style="margin:4px 0 8px">Select make → model → year → category</p>
+      <div class="row">
+        <select style="flex:1"><option>Select Make</option><option>Toyota</option><option>Honda</option><option>BMW</option></select>
+        <select style="flex:1"><option>Select Model</option></select>
+        <select style="flex:1"><option>Year</option></select>
+      </div>
+      <a href="../buyer/02-catalog.html" class="btn btn-primary btn-block" style="margin-top:8px">Browse Parts</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Featured Categories ===== -->
+<h2>Popular Categories</h2>
+<div class="card-grid">
+  <div class="card"><div class="thumb">[ Brake System ]</div><strong>Brake System</strong><small class="muted">Pads, Rotors, Calipers</small></div>
+  <div class="card"><div class="thumb">[ Engine Parts ]</div><strong>Engine Parts</strong><small class="muted">Filters, Belts, Gaskets</small></div>
+  <div class="card"><div class="thumb">[ Suspension ]</div><strong>Suspension</strong><small class="muted">Shocks, Struts, Bushings</small></div>
+  <div class="card"><div class="thumb">[ Lighting ]</div><strong>Lighting</strong><small class="muted">Headlights, Taillights, Bulbs</small></div>
+</div>
+
+<!-- ===== Bottom CTA ===== -->
+<div class="box box-muted" style="margin-top:24px; text-align:center">
+  <p><strong>Are you a supplier?</strong> <a href="../supplier/01-dashboard.html">List your parts on APEX</a></p>
+</div>
+
+<div class="prototype-note">Buyer 01 · Homepage — BUY-02/09/10/11</div>
+</body>
+</html>

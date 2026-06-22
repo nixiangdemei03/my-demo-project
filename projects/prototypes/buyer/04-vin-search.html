@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — VIN Search [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="02-catalog.html">Catalog</a>
+    <a href="04-vin-search.html">VIN Lookup</a>
+    <a href="05-login.html">Log in</a>
+  </nav>
+</div>
+
+<h1>VIN Lookup</h1>
+<p class="muted">Enter a 17-character Vehicle Identification Number to find matching parts.</p>
+
+<!-- ===== VIN Input ===== -->
+<div class="box" style="margin-top:16px">
+  <div class="row" style="align-items:end">
+    <div class="col-3">
+      <div class="form-group" style="margin:0">
+        <label>VIN Number</label>
+        <input type="text" placeholder="JTEHT05JX02114563" style="font-family:monospace; font-size:16px; letter-spacing:2px" value="JTEHT05JX02114563">
+      </div>
+    </div>
+    <div><button class="btn btn-primary" style="padding:8px 32px">Search</button></div>
+  </div>
+</div>
+
+<!-- ===== Result: HIT ===== -->
+<div class="box box-solid" style="margin-top:24px; border-color:var(--c-accent)">
+  <h3>✅ Vehicle Identified</h3>
+  <table>
+    <tr><td style="color:var(--c-text-muted);width:120px">VIN</td><td>JTEHT05JX02114563</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Make</td><td>Toyota</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Model</td><td>Land Cruiser 100</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Year</td><td>2002</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Engine</td><td>2UZ-FE 4.7L V8 Petrol</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Matched via</td><td>vin_pattern "JTEHT05J***" → prefix match</td></tr>
+  </table>
+</div>
+
+<!-- ===== Matching Parts ===== -->
+<h2 style="margin-top:24px">Matching Parts for This Vehicle</h2>
+
+<div class="box" style="margin-bottom:12px">
+  <h3>Brake System (12 parts)</h3>
+  <table>
+    <tr><th>Part</th><th>OEM</th><th>Supplier</th><th>Price (USD)</th><th>MOQ</th><th></th></tr>
+    <tr>
+      <td><a href="03-product-detail.html">Brake Pad Set — Front</a></td>
+      <td>04465-60070</td>
+      <td>ABC Auto Parts ⭐</td>
+      <td>$28.00</td>
+      <td>50</td>
+      <td><a href="03-product-detail.html" class="btn btn-sm">View</a></td>
+    </tr>
+    <tr>
+      <td>Brake Rotor — Front</td>
+      <td>43512-60120</td>
+      <td>ABC Auto Parts ⭐</td>
+      <td>$45.00</td>
+      <td>20</td>
+      <td><a href="#" class="btn btn-sm">View</a></td>
+    </tr>
+    <tr>
+      <td>Brake Pad Set — Rear</td>
+      <td>04466-60050</td>
+      <td>Guangzhou Brake Co.</td>
+      <td>$22.00</td>
+      <td>50</td>
+      <td><a href="#" class="btn btn-sm">View</a></td>
+    </tr>
+  </table>
+</div>
+
+<div class="box" style="margin-bottom:12px">
+  <h3>Engine Parts (8 parts)</h3>
+  <table>
+    <tr><th>Part</th><th>OEM</th><th>Supplier</th><th>Price (USD)</th><th>MOQ</th><th></th></tr>
+    <tr>
+      <td>Oil Filter</td>
+      <td>90915-YZZD2</td>
+      <td>XYZ Trading ⭐</td>
+      <td>$3.50</td>
+      <td>100</td>
+      <td><a href="#" class="btn btn-sm">View</a></td>
+    </tr>
+    <tr>
+      <td>Air Filter</td>
+      <td>17801-50020</td>
+      <td>XYZ Trading ⭐</td>
+      <td>$5.20</td>
+      <td>100</td>
+      <td><a href="#" class="btn btn-sm">View</a></td>
+    </tr>
+  </table>
+</div>
+
+<div class="box" style="margin-bottom:12px">
+  <h3>Suspension (5 parts)</h3>
+  <table>
+    <tr><th>Part</th><th>OEM</th><th>Supplier</th><th>Price (USD)</th><th>MOQ</th><th></th></tr>
+    <tr>
+      <td>Shock Absorber — Front</td>
+      <td>48510-69235</td>
+      <td>ABC Auto Parts ⭐</td>
+      <td>$52.00</td>
+      <td>20</td>
+      <td><a href="#" class="btn btn-sm">View</a></td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===== MISS scenario note ===== -->
+<div class="box box-muted" style="margin-top:24px">
+  <h3>🔮 Miss Scenario — VIN Not Found</h3>
+  <p class="muted">If vin_pattern does not match any product_vehicle_fits row:</p>
+  <div class="box" style="margin-top:8px">
+    <p><strong>No matches found</strong> for VIN <code>WDD2040481A123456</code></p>
+    <p style="font-size:13px">You can still place an order — your VIN will be included. The supplier will receive it and use their own tools to verify compatibility.</p>
+    <a href="../buyer/03-product-detail.html" class="btn btn-primary" style="margin-top:8px">Browse Parts & Place Order with VIN</a>
+  </div>
+</div>
+
+<!-- ===== Post-Transaction DB Enrichment ===== -->
+<div class="box box-muted" style="margin-top:16px">
+  <h3>🔄 Supplier Data Enrichment (Post-Transaction)</h3>
+  <p style="font-size:13px">After the order is completed or inquiry is closed, the supplier will be prompted:</p>
+  <div class="box" style="margin-top:8px">
+    <p><strong>📢 Help improve our VIN database!</strong></p>
+    <p style="font-size:13px">You recently processed an order with VIN <code>WDD2040481A123456</code>. Would you like to fill in the vehicle details (Make / Model / Year / Engine) now? This helps other buyers find your products faster.</p>
+    <p style="font-size:13px; margin-top:4px">🎁 <em>Suppliers who contribute data receive promotional priority rewards.</em> (Reward formula TBD)</p>
+    <button class="btn btn-sm btn-primary" style="margin-top:8px">Fill Vehicle Data →</button>
+    <button class="btn btn-sm" style="margin-top:8px; margin-left:4px">Skip</button>
+  </div>
+</div>
+
+<div class="prototype-note">Buyer 04 · VIN Search — BUY-09 (hit + miss paths + post-transaction enrichment)</div>
+</body>
+</html>

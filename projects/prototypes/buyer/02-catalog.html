@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Product Catalog [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="#">Catalog</a>
+    <a href="04-vin-search.html">VIN Lookup</a>
+    <a href="05-login.html">Log in</a>
+    <a href="06-register.html" class="btn btn-primary btn-sm">Sign up</a>
+  </nav>
+</div>
+
+<!-- ===== Filters ===== -->
+<div class="box box-muted" style="margin-bottom:24px">
+  <div class="row" style="align-items:end">
+    <div class="col-2">
+      <div class="form-group" style="margin:0">
+        <label>Search</label>
+        <input type="text" placeholder="OEM number, keyword, or part name...">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" style="margin:0">
+        <label>Category</label>
+        <select><option>All Categories</option><option>Brake System</option><option>Engine Parts</option><option>Suspension</option></select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" style="margin:0">
+        <label>Price Range</label>
+        <select><option>Any</option><option>$0 – $50</option><option>$50 – $200</option><option>$200+</option></select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group" style="margin:0">
+        <label>Supplier</label>
+        <select><option>All Suppliers</option><option>Verified Only</option></select>
+      </div>
+    </div>
+    <div style="padding-top:18px">
+      <button class="btn btn-primary">Apply</button>
+      <button class="btn">Reset</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== View Toggle + Sort ===== -->
+<div class="row" style="justify-content:space-between; align-items:center; margin-bottom:12px">
+  <small class="muted">Showing 1–20 of 156 products</small>
+  <div class="btn-group">
+    <button class="btn btn-sm" style="font-weight:700">[ Grid ]</button>
+    <button class="btn btn-sm">[ List ]</button>
+    <select style="margin-left:8px"><option>Price: Low → High</option><option>Newest First</option></select>
+  </div>
+</div>
+
+<!-- ===== Product Grid ===== -->
+<div class="card-grid">
+  <div class="card">
+    <a href="03-product-detail.html" style="text-decoration:none; color:inherit">
+      <div class="thumb">[ Product Image ]</div>
+      <strong>Brake Pad Set — Toyota Hilux</strong>
+      <small class="muted">OEM: 04465-0K030</small>
+      <div class="row" style="justify-content:space-between; align-items:center">
+        <strong>$24.50</strong>
+        <span class="tag">MOQ: 50</span>
+      </div>
+      <small class="muted">Supplier: ABC Auto Parts ⭐ Verified</small>
+    </a>
+  </div>
+  <div class="card">
+    <a href="03-product-detail.html" style="text-decoration:none; color:inherit">
+      <div class="thumb">[ Product Image ]</div>
+      <strong>Oil Filter — Honda Civic</strong>
+      <small class="muted">OEM: 15400-PLM-A01</small>
+      <div class="row" style="justify-content:space-between; align-items:center">
+        <strong>$3.20</strong>
+        <span class="tag">MOQ: 100</span>
+      </div>
+      <small class="muted">Supplier: XYZ Trading ⭐ Verified</small>
+    </a>
+  </div>
+  <div class="card">
+    <div class="thumb">[ Product Image ]</div>
+    <strong>Headlight Assembly — BMW 3 Series</strong>
+    <small class="muted">OEM: 63117182377</small>
+    <div class="row" style="justify-content:space-between; align-items:center">
+      <strong>$185.00</strong>
+      <span class="tag">MOQ: 10</span>
+    </div>
+    <small class="muted">Supplier: Guangzhou Lighting Co.</small>
+  </div>
+  <div class="card">
+    <div class="thumb">[ Product Image ]</div>
+    <strong>Shock Absorber — Toyota Land Cruiser</strong>
+    <small class="muted">OEM: 48510-69195</small>
+    <div class="row" style="justify-content:space-between; align-items:center">
+      <strong>$42.00</strong>
+      <span class="tag">MOQ: 20</span>
+    </div>
+    <small class="muted">Supplier: ABC Auto Parts ⭐ Verified</small>
+  </div>
+</div>
+
+<!-- ===== Pagination ===== -->
+<div class="row" style="justify-content:center; align-items:center; margin-top:24px; gap:4px">
+  <button class="btn btn-sm">‹ Prev</button>
+  <button class="btn btn-sm btn-primary">1</button>
+  <button class="btn btn-sm">2</button>
+  <button class="btn btn-sm">3</button>
+  <span class="muted">…</span>
+  <button class="btn btn-sm">8</button>
+  <button class="btn btn-sm">Next ›</button>
+</div>
+
+<div class="prototype-note">Buyer 02 · Catalog — BUY-02</div>
+</body>
+</html>

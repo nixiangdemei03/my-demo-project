@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Product Form [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="../buyer/01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="01-dashboard.html">Dashboard</a>
+    <span>🏭 ABC Auto Parts <a href="#" class="btn btn-sm">Logout</a></span>
+  </nav>
+</div>
+
+<!-- ===== Breadcrumb ===== -->
+<small class="muted"><a href="01-dashboard.html">Dashboard</a> › Products › Add New Product</small>
+
+<h1 style="margin-top:12px">Add New Product</h1>
+
+<form>
+<div class="row" style="margin-top:16px">
+  <!-- Left: Basic Info -->
+  <div class="col stack">
+    <div class="box">
+      <h3>Basic Information</h3>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Product Name (Chinese) *</label><input type="text" placeholder="刹车片 — 丰田海拉克斯"></div></div>
+        <div class="col"><div class="form-group"><label>Product Name (English)</label><input type="text" placeholder="Brake Pad Set — Toyota Hilux"></div></div>
+      </div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Category *</label><select><option>Select category</option><option>Brake System</option><option>Engine Parts</option><option>Suspension</option></select></div></div>
+        <div class="col"><div class="form-group"><label>OEM Number</label><input type="text" placeholder="04465-0K030 / 04465-60070"></div></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Pricing & Inventory</h3>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Reference Price (CNY) *</label><input type="number" placeholder="¥178"><small class="form-hint">Supplier's original price in RMB</small></div></div>
+        <div class="col"><div class="form-group"><label>Sell Price (USD) *</label><input type="number" placeholder="$24.50"><small class="form-hint">Price shown to international buyers</small></div></div>
+        <div class="col"><div class="form-group"><label>Stock *</label><input type="number" placeholder="5000"><small class="form-hint">Current available quantity</small></div></div>
+      </div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Minimum Order Quantity (MOQ)</label><input type="number" placeholder="50"><small class="form-hint">Minimum pieces per order</small></div></div>
+        <div class="col"></div>
+      </div>
+    </div>
+
+    <div class="box">
+      <h3>Warranty & Returns</h3>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Warranty Period</label><input type="text" placeholder="e.g. 12 months / 50,000 km"></div></div>
+        <div class="col"><div class="form-group"><label>Return Policy</label><input type="text" placeholder="e.g. 30-day return, buyer pays return shipping"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right: Media + Specs + Fitment -->
+  <div class="col stack">
+    <!-- Image Upload -->
+    <div class="box">
+      <h3>Product Images</h3>
+      <div class="row" style="gap:8px; flex-wrap:wrap">
+        <div style="width:100px;height:100px;border:2px dashed var(--c-accent);display:flex;align-items:center;justify-content:center;font-size:24px;cursor:pointer">+</div>
+        <div style="width:100px;height:100px;border:1px dashed var(--c-border);background:var(--c-bg-muted)">[img]</div>
+        <div style="width:100px;height:100px;border:1px dashed var(--c-border);background:var(--c-bg-muted)">[img]</div>
+      </div>
+      <small class="form-hint">jpg/png/webp · max 5MB each · drag to reorder · first image = cover</small>
+    </div>
+
+    <!-- Specs -->
+    <div class="box">
+      <h3>Specifications</h3>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Material</label><input type="text" placeholder="Semi-metallic"></div></div>
+        <div class="col"><div class="form-group"><label>Position</label><input type="text" placeholder="Front Axle"></div></div>
+      </div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Dimensions (W × H × T)</label><input type="text" placeholder="137 × 53 × 16 mm"></div></div>
+        <div class="col"><div class="form-group"><label>Weight</label><input type="text" placeholder="1.2 kg / set"></div></div>
+      </div>
+      <div class="form-group"><label>Description</label><textarea placeholder="Product description, features, certifications..."></textarea></div>
+    </div>
+
+    <!-- Vehicle Fitment -->
+    <div class="box">
+      <h3>Vehicle Fitment <small class="muted">(add one row per vehicle)</small></h3>
+      <table>
+        <tr><th>Make</th><th>Model</th><th>Year Start</th><th>Year End</th><th>Engine</th><th>VIN Pattern</th><th></th></tr>
+        <tr>
+          <td><input type="text" value="Toyota" style="width:80px"></td>
+          <td><input type="text" value="Hilux" style="width:80px"></td>
+          <td><input type="number" value="2015" style="width:60px"></td>
+          <td><input type="number" value="2023" style="width:60px"></td>
+          <td><input type="text" value="2.4L/2.8L Diesel" style="width:110px"></td>
+          <td><input type="text" value="MR0***" style="width:80px"></td>
+          <td><button class="btn btn-sm">✕</button></td>
+        </tr>
+      </table>
+      <button class="btn btn-sm" style="margin-top:8px">+ Add Vehicle</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Submit ===== -->
+<div class="box box-muted row" style="margin-top:24px; justify-content:flex-end; align-items:center">
+  <button class="btn">Save Draft</button>
+  <button class="btn btn-primary" style="padding:10px 32px">Publish Product</button>
+  <small class="muted">* Products are visible to buyers immediately after publishing</small>
+</div>
+</form>
+
+<div class="prototype-note">Supplier 02 · Product Form — SUP-02/03/10</div>
+</body>
+</html>

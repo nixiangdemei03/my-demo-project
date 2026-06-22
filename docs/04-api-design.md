@@ -102,9 +102,45 @@
 
 | 方法 | 路径 | 说明 | 鉴权 |
 |------|------|------|:--:|
-| POST | `/api/inquiries` | 发送询盘 | buyer |
-| GET | `/api/inquiries` | 收/发件箱 | JWT |
+| POST | `/api/inquiries` | 发送询盘（type: message / inquiry） | buyer |
+| GET | `/api/inquiries` | 收/发件箱（按 type 过滤） | JWT |
 | PATCH | `/api/inquiries/:id/read` | 标记已读 | JWT |
+| POST | `/api/inquiries/:id/convert-to-order` | 询问转正式订单 | buyer |
+| PATCH | `/api/inquiries/:id/cancel` | 取消询问（双方均可） | JWT |
+
+**inquiry_type 区分**：
+- `message` — BUY-04 轻量消息，自由文本，不可转单
+- `inquiry` — BUY-12 结构化询盘，含 OEM/VIN/图片/数量，可转单
+
+## Payments — `/api/payments`
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|------|------|------|:--:|
+| POST | `/api/payments/checkout` | 创建支付（返回支付网关 URL 或模拟响应） | buyer |
+| POST | `/api/payments/webhook` | 支付网关回调（v1.0 为模拟占位） | - |
+| GET | `/api/payments` | 支付流水列表（按角色过滤） | JWT |
+
+> v1.0 支付网关为模拟 API——`checkout` 直接返回 `payment_status=paid`，webhook 端点预留。
+
+## Settlements — `/api/settlements`
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|------|------|------|:--:|
+| GET | `/api/settlements` | 结算单列表（按角色过滤） | JWT |
+| GET | `/api/settlements/:id` | 结算单详情 | JWT |
+| POST | `/api/settlements/generate` | 手动触发月度结算 | admin |
+
+> 月度结算于每月 1 日自动生成（定时任务），同时支持管理员手动触发。
+
+## Refunds — `/api/refunds`
+
+| 方法 | 路径 | 说明 | 鉴权 |
+|------|------|------|:--:|
+| POST | `/api/refunds` | 发起退款申请 | buyer |
+| PATCH | `/api/refunds/:id` | 处理退款（供应商审核/平台介入） | JWT |
+| GET | `/api/refunds` | 退款列表（按角色过滤） | JWT |
+
+> v1.0 退款为模拟占位 API，用于验证流程。真实退款对接在支付网关接入后完成。
 
 ## 分页格式
 

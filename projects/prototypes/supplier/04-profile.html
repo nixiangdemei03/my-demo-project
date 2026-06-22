@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Supplier Profile [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="../buyer/01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="01-dashboard.html">Dashboard</a>
+    <span>🏭 ABC Auto Parts <a href="#" class="btn btn-sm">Logout</a></span>
+  </nav>
+</div>
+
+<small class="muted"><a href="01-dashboard.html">Dashboard</a> › Edit Profile</small>
+<h1 style="margin-top:8px">Edit Company Profile</h1>
+<p class="muted">This page is visible to buyers at <code>/suppliers/abc-auto-parts</code></p>
+
+<div class="row" style="margin-top:16px">
+  <!-- Left: Preview -->
+  <div class="col stack">
+    <h3>Public Preview</h3>
+    <div class="box">
+      <!-- Supplier Card Preview -->
+      <div style="text-align:center; padding:24px 0">
+        <div style="width:80px;height:80px;border:1px dashed var(--c-border);background:var(--c-bg-muted);margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:10px">[Logo]</div>
+        <h2 style="margin-top:8px">ABC Auto Parts Co., Ltd.</h2>
+        <small class="muted">⭐ Verified Supplier · Joined 2025</small>
+        <p style="font-size:13px; margin-top:8px">Specializing in brake systems for Japanese vehicles. 15 years manufacturing experience. ISO 9001 certified.</p>
+      </div>
+
+      <table>
+        <tr><td style="color:var(--c-text-muted)">Established</td><td>2008</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Main Brands</td><td>Toyota, Honda, Nissan, Mitsubishi</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Address</td><td>No. 188, Auto Parts Road, Guangzhou, Guangdong, China</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Phone</td><td>+86 20 1234 5678</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Email</td><td>sales@abcautoparts.cn</td></tr>
+      </table>
+
+      <!-- Certificates -->
+      <h3 style="margin-top:12px">Certificates</h3>
+      <div class="row" style="gap:8px">
+        <div style="width:120px;height:80px;border:1px dashed var(--c-border);background:var(--c-bg-muted);display:flex;align-items:center;justify-content:center;font-size:10px">[ISO 9001]</div>
+        <div style="width:120px;height:80px;border:1px dashed var(--c-border);background:var(--c-bg-muted);display:flex;align-items:center;justify-content:center;font-size:10px">[TS 16949]</div>
+      </div>
+
+      <p style="margin-top:12px"><strong>850+ Products</strong> listed</p>
+    </div>
+  </div>
+
+  <!-- Right: Edit Form -->
+  <div class="col stack">
+    <h3>Edit Information</h3>
+    <div class="box">
+      <div class="form-group"><label>Logo</label><input type="file"><small class="form-hint">jpg/png, max 2MB, square recommended</small></div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Company Name (Chinese) *</label><input type="text" value="ABC Auto Parts Co., Ltd."></div></div>
+        <div class="col"><div class="form-group"><label>Company Name (English)</label><input type="text" value="广州ABC汽车配件有限公司"></div></div>
+      </div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Established Year</label><input type="number" value="2008"></div></div>
+        <div class="col"><div class="form-group"><label>Main Brands</label><input type="text" value="Toyota, Honda, Nissan, Mitsubishi"></div></div>
+      </div>
+      <div class="form-group"><label>Company Description</label><textarea>Specializing in brake systems for Japanese vehicles. 15 years manufacturing experience. ISO 9001 certified.</textarea></div>
+      <div class="form-group"><label>Address</label><input type="text" value="No. 188, Auto Parts Road, Guangzhou, Guangdong, China"></div>
+      <div class="row">
+        <div class="col"><div class="form-group"><label>Contact Phone</label><input type="text" value="+86 20 1234 5678"></div></div>
+        <div class="col"><div class="form-group"><label>Contact Email</label><input type="email" value="sales@abcautoparts.cn"></div></div>
+      </div>
+      <div class="form-group"><label>Certificates</label><input type="file" multiple><small class="form-hint">Upload ISO, TS, or other certification documents (jpg/png/pdf)</small></div>
+    </div>
+
+    <div class="row" style="justify-content:flex-end">
+      <button class="btn">Cancel</button>
+      <button class="btn btn-primary">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="prototype-note">Supplier 04 · Profile Edit — SUP-09</div>
+</body>
+</html>

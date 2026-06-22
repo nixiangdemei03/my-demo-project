@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Order Management [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="../buyer/01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="01-dashboard.html">Dashboard</a>
+    <span>🏭 ABC Auto Parts <a href="#" class="btn btn-sm">Logout</a></span>
+  </nav>
+</div>
+
+<small class="muted"><a href="01-dashboard.html">Dashboard</a> › Orders</small>
+
+<div class="row" style="justify-content:space-between; align-items:center; margin-top:8px">
+  <h1>Order Management</h1>
+  <select><option>All Statuses</option><option>Pending (23)</option><option>Confirmed</option><option>Awaiting Shipment</option><option>Shipped</option></select>
+</div>
+
+<!-- ===== Order Table ===== -->
+<table style="margin-top:16px">
+  <tr>
+    <th>Order #</th><th>Product</th><th>Buyer</th><th>Qty</th><th>Total</th><th>Status</th><th>Payment</th><th>Shipment</th><th></th>
+  </tr>
+  <tr>
+    <td>APEX-20260622-0001</td>
+    <td>Brake Pad Set — Hilux</td>
+    <td>buyer@example.com</td>
+    <td>200</td>
+    <td>$4,900</td>
+    <td><span class="tag">pending</span></td>
+    <td><span class="tag" style="border-color:var(--c-text-muted)">⚠️ 未付款</span></td>
+    <td>—</td>
+    <td>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-primary">Confirm</button>
+        <button class="btn btn-sm">Reject</button>
+      </div>
+      <small class="muted" style="display:block;margin-top:2px">待采购商付款，可<a href="#">联系确认</a></small>
+    </td>
+  </tr>
+  <tr>
+    <td>APEX-20260621-0002</td>
+    <td>Oil Filter — Civic</td>
+    <td>parts@autoshop.co.ke</td>
+    <td>500</td>
+    <td>$1,600</td>
+    <td><span class="tag">confirmed</span></td>
+    <td><span class="tag">paid</span></td>
+    <td>—</td>
+    <td><button class="btn btn-sm btn-primary">Ship Now</button></td>
+  </tr>
+  <tr>
+    <td>APEX-20260620-0003</td>
+    <td>Shock Absorber — Land Cruiser</td>
+    <td>orders@toyotaparts.ng</td>
+    <td>40</td>
+    <td>$1,680</td>
+    <td><span class="tag">shipped</span></td>
+    <td><span class="tag">paid</span></td>
+    <td><code>SF1234567890</code></td>
+    <td><button class="btn btn-sm">View</button></td>
+  </tr>
+</table>
+
+<!-- ===== Shipping Modal (inline for wireframe) ===== -->
+<div class="box box-solid" style="margin-top:32px; border-color:var(--c-accent)">
+  <h3>📦 Ship Order — APEX-20260621-0002</h3>
+  <p class="muted">Oil Filter — Civic × 500 | Buyer: parts@autoshop.co.ke</p>
+
+  <div class="row" style="margin-top:12px">
+    <div class="col">
+      <div class="form-group">
+        <label>Freight Company *</label>
+        <select>
+          <option>Select freight company</option>
+          <option>SF Express (International) — 5-7 days</option>
+          <option>DHL Express — 3-5 days</option>
+          <option>FedEx International — 4-6 days</option>
+          <option>China Post Air Mail — 15-30 days</option>
+        </select>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label>Tracking Number *</label>
+        <input type="text" placeholder="SF1234567890">
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label>Notes (optional)</label>
+    <textarea placeholder="Any shipping notes for the buyer..."></textarea>
+  </div>
+
+  <div class="row" style="align-items:center; gap:12px">
+    <button class="btn btn-primary" style="padding:8px 32px">Confirm Shipment & Notify Buyer</button>
+    <small class="muted">This will update order status to "shipped" and send a notification to the buyer</small>
+  </div>
+</div>
+
+<div class="prototype-note">Supplier 03 · Order Management — SUP-04/05</div>
+</body>
+</html>

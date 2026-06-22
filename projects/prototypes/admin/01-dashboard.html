@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Admin Dashboard [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="../buyer/01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <span>🔧 Admin <a href="#" class="btn btn-sm">Logout</a></span>
+  </nav>
+</div>
+
+<!-- ===== Admin Tabs ===== -->
+<div class="row" style="border-bottom:2px solid var(--c-border); margin-bottom:24px">
+  <a href="#" style="padding:8px 16px; border-bottom:2px solid var(--c-accent); margin-bottom:-2px; font-weight:600; text-decoration:none; color:inherit">📊 Overview</a>
+  <a href="02-supplier-review.html" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">👤 Users</a>
+  <a href="#" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">📦 Products</a>
+  <a href="#" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">📋 Orders</a>
+  <a href="#" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">📂 Categories</a>
+  <a href="#" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">🚢 Freight</a>
+</div>
+
+<!-- ===== Platform Stats ===== -->
+<div class="row" style="margin-bottom:24px">
+  <div class="col box box-muted stat"><div class="num">48</div><small class="muted">Suppliers</small><br><small class="muted">12 pending review</small></div>
+  <div class="col box box-muted stat"><div class="num">3,850</div><small class="muted">Products</small><br><small class="muted">23 flagged for review</small></div>
+  <div class="col box box-muted stat"><div class="num">1,240</div><small class="muted">Orders (This Month)</small><br><small class="muted">↑ 18% vs last month</small></div>
+  <div class="col box box-muted stat"><div class="num">$326,500</div><small class="muted">GMV (This Month)</small><br><small class="muted">Est. platform fee: $12,795 (3%-7% tiered)</small></div>
+</div>
+
+<!-- ===== Pending Actions ===== -->
+<div class="row" style="margin-bottom:16px">
+  <div class="col box" style="border-left:4px solid var(--c-accent)">
+    <h3>⚠️ Pending Supplier Reviews</h3>
+    <p class="muted" style="margin-bottom:8px">12 suppliers submitted documents, awaiting verification</p>
+    <a href="02-supplier-review.html" class="btn btn-sm btn-primary">Review Now →</a>
+  </div>
+  <div class="col box" style="border-left:4px solid var(--c-accent)">
+    <h3>🚩 Flagged Products</h3>
+    <p class="muted" style="margin-bottom:8px">23 products flagged (mismatched OEM, suspicious pricing, etc.)</p>
+    <a href="#" class="btn btn-sm">Review Now →</a>
+  </div>
+</div>
+
+<!-- ===== Recent Orders (Global) ===== -->
+<div class="box">
+  <h3>All Recent Orders</h3>
+  <table>
+    <tr><th>Order #</th><th>Supplier</th><th>Buyer</th><th>Product</th><th>Total</th><th>Status</th><th>Created</th></tr>
+    <tr>
+      <td>APEX-20260622-0001</td><td>ABC Auto Parts</td><td>buyer@example.com</td><td>Brake Pad Set — Hilux</td><td>$4,900</td><td><span class="tag">pending</span></td><td>2026-06-22</td>
+    </tr>
+    <tr>
+      <td>APEX-20260622-0005</td><td>XYZ Trading</td><td>parts@autoshop.co.ke</td><td>Oil Filter — Civic</td><td>$1,600</td><td><span class="tag">paid</span></td><td>2026-06-22</td>
+    </tr>
+    <tr>
+      <td>APEX-20260621-0003</td><td>Guangzhou Lighting Co.</td><td>orders@toyotaparts.ng</td><td>Headlight Assembly — 3 Series</td><td>$3,700</td><td><span class="tag">shipped</span></td><td>2026-06-21</td>
+    </tr>
+  </table>
+</div>
+
+<!-- ===== Monthly Settlement Preview ===== -->
+<div class="box" style="margin-top:16px">
+  <h3>💰 Monthly Settlement — Preview (June 2026)</h3>
+  <table>
+    <tr><th>Supplier</th><th>Orders Delivered</th><th>Total Sales</th><th>Rate</th><th>Platform Fee</th><th>Supplier Payout</th></tr>
+    <tr><td>ABC Auto Parts</td><td>45</td><td>$128,400</td><td><span class="tag">3% (early)</span></td><td>$3,852</td><td>$124,548</td></tr>
+    <tr><td>XYZ Trading</td><td>32</td><td>$89,200</td><td><span class="tag">3% (early)</span></td><td>$2,676</td><td>$86,524</td></tr>
+    <tr><td>Guangzhou Lighting Co.</td><td>18</td><td>$43,100</td><td><span class="tag">7% (std)</span></td><td>$3,017</td><td>$40,083</td></tr>
+  </table>
+  <small class="muted" style="display:block;margin-top:8px">Settlement date: July 1, 2026 · Auto-generated at midnight UTC+8 · Rates: 3% (first 40 suppliers) / 7% (standard)</small>
+</div>
+
+<!-- ===== Semi-Annual Risk Assessment ===== -->
+<div class="box" style="margin-top:16px">
+  <h3>📊 Semi-Annual Supplier Risk Assessment <small class="muted">(Jan–Jun 2026)</small></h3>
+  <div class="row" style="margin-top:12px">
+    <!-- Low Sales -->
+    <div class="col box box-muted">
+      <h3 style="color:var(--c-text-muted)">⚠️ Low Sales — Needs Attention</h3>
+      <table>
+        <tr><th>Supplier</th><th>6-Month Sales</th><th>Products</th><th>Action</th></tr>
+        <tr><td>Changsha Filters Co.</td><td>$1,200</td><td>45</td><td><button class="btn btn-sm">Contact & Push</button></td></tr>
+        <tr><td>Wuhan Brake Parts</td><td>$3,800</td><td>28</td><td><button class="btn btn-sm">Contact & Push</button></td></tr>
+      </table>
+      <small class="muted" style="display:block;margin-top:4px">Threshold: &lt;$5,000 / 6 months → platform proactively contacts for support & promotion</small>
+    </div>
+    <!-- Abnormal High Sales -->
+    <div class="col box box-muted">
+      <h3 style="color:var(--c-text-muted)">🔍 Abnormal High Sales — Review Required</h3>
+      <table>
+        <tr><th>Supplier</th><th>6-Month Sales</th><th>Buyers</th><th>Action</th></tr>
+        <tr><td>Guangzhou Lighting Co.</td><td>$1,850,000</td><td>3</td><td><button class="btn btn-sm">Investigate</button></td></tr>
+      </table>
+      <small class="muted" style="display:block;margin-top:4px">Flag: High value + few buyers → potential money laundering or asset transfer risk</small>
+    </div>
+  </div>
+  <small class="muted" style="display:block;margin-top:8px">Next assessment: Jan 1, 2027 · Auto-generated semi-annually</small>
+</div>
+
+<div class="prototype-note">Admin 01 · Dashboard — ADM-02/04/05/06 + semi-annual risk assessment</div>
+</body>
+</html>

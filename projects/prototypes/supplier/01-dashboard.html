@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Supplier Dashboard [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="../buyer/01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <span>🏭 ABC Auto Parts Co., Ltd. <a href="#" class="btn btn-sm">Logout</a></span>
+  </nav>
+</div>
+
+<!-- ===== Dashboard Tabs ===== -->
+<div class="row" style="border-bottom:2px solid var(--c-border); margin-bottom:24px">
+  <a href="#" style="padding:8px 16px; border-bottom:2px solid var(--c-accent); margin-bottom:-2px; font-weight:600; text-decoration:none; color:inherit">📊 Overview</a>
+  <a href="02-product-form.html" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">📦 Products</a>
+  <a href="03-order-management.html" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">📋 Orders</a>
+  <a href="04-profile.html" style="padding:8px 16px; text-decoration:none; color:var(--c-text-muted)">🏢 Profile</a>
+</div>
+
+<!-- ===== Stats Row ===== -->
+<div class="row" style="margin-bottom:24px">
+  <div class="col box box-muted stat"><div class="num">850</div><small class="muted">Products Listed</small></div>
+  <div class="col box box-muted stat"><div class="num">23</div><small class="muted">Pending Orders</small></div>
+  <div class="col box box-muted stat"><div class="num">$48,320</div><small class="muted">This Month Sales</small></div>
+  <div class="col box box-muted stat"><div class="num">$1,268</div><small class="muted">Est. Platform Fee (2%)</small></div>
+</div>
+
+<!-- ===== Quick Actions ===== -->
+<div class="row" style="margin-bottom:24px">
+  <a href="02-product-form.html" class="btn btn-primary" style="flex:1;text-align:center;padding:12px">+ Add New Product</a>
+  <a href="03-order-management.html" class="btn" style="flex:1;text-align:center;padding:12px">View Pending Orders (23)</a>
+  <a href="04-profile.html" class="btn" style="flex:1;text-align:center;padding:12px">Edit Company Profile</a>
+</div>
+
+<!-- ===== Recent Orders ===== -->
+<div class="box">
+  <h3>Recent Orders</h3>
+  <table>
+    <tr><th>Order #</th><th>Product</th><th>Buyer</th><th>Qty</th><th>Total</th><th>Status</th><th></th></tr>
+    <tr>
+      <td>APEX-20260622-0001</td><td>Brake Pad Set — Hilux</td><td>buyer@example.com</td><td>200</td><td>$4,900</td>
+      <td><span class="tag">pending</span></td>
+      <td><a href="03-order-management.html" class="btn btn-sm">Review</a></td>
+    </tr>
+    <tr>
+      <td>APEX-20260622-0004</td><td>Oil Filter — Civic</td><td>parts@autoshop.co.ke</td><td>500</td><td>$1,600</td>
+      <td><span class="tag">pending</span></td>
+      <td><a href="03-order-management.html" class="btn btn-sm">Review</a></td>
+    </tr>
+    <tr>
+      <td>APEX-20260621-0002</td><td>Shock Absorber — Prado</td><td>orders@toyotaparts.ng</td><td>40</td><td>$1,680</td>
+      <td><span class="tag">confirmed → awaiting payment</span></td>
+      <td><a href="03-order-management.html" class="btn btn-sm">View</a></td>
+    </tr>
+  </table>
+</div>
+
+<div class="prototype-note">Supplier 01 · Dashboard — SUP-04/08</div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>APEX — Product Detail [Wireframe]</title>
+<link rel="stylesheet" href="../shared/wireframe.css">
+</head>
+<body>
+
+<div class="topbar">
+  <span class="logo"><a href="01-homepage.html" style="text-decoration:none;color:inherit">APEX</a></span>
+  <nav>
+    <a href="02-catalog.html">Catalog</a>
+    <a href="04-vin-search.html">VIN Lookup</a>
+    <a href="05-login.html">Log in</a>
+  </nav>
+</div>
+
+<!-- ===== Breadcrumb ===== -->
+<small class="muted"><a href="02-catalog.html">Catalog</a> › Brake System › Brake Pad Set — Toyota Hilux</small>
+
+<!-- ===== Product Main ===== -->
+<div class="row" style="margin-top:16px">
+  <!-- Left: Image Gallery -->
+  <div class="col">
+    <div style="border:1px dashed var(--c-border); height:360px; background:var(--c-bg-muted); display:flex; align-items:center; justify-content:center">
+      [ Main Product Image — Large ]
+    </div>
+    <div class="row" style="margin-top:8px; gap:8px">
+      <div style="width:64px;height:64px;border:1px dashed var(--c-border);background:var(--c-bg-muted)"></div>
+      <div style="width:64px;height:64px;border:2px solid var(--c-accent);background:var(--c-bg-muted)"></div>
+      <div style="width:64px;height:64px;border:1px dashed var(--c-border);background:var(--c-bg-muted)"></div>
+      <div style="width:64px;height:64px;border:1px dashed var(--c-border);background:var(--c-bg-muted)"></div>
+      <div style="width:64px;height:64px;border:1px dashed var(--c-border);color:var(--c-text-muted);font-size:10px;display:flex;align-items:center;justify-content:center">+3 more</div>
+    </div>
+  </div>
+
+  <!-- Right: Product Info -->
+  <div class="col stack">
+    <h1 style="font-size:22px">Brake Pad Set — Toyota Hilux (2015–2023)</h1>
+
+    <div class="row">
+      <span class="tag">OEM: 04465-0K030</span>
+      <span class="tag">Category: Brake System</span>
+    </div>
+
+    <!-- Price Block -->
+    <div class="box box-solid" style="background:var(--c-bg-muted)">
+      <div class="row" style="align-items:baseline">
+        <div>
+          <small class="muted">Supplier Price (CNY)</small><br>
+          <span style="font-size:20px; text-decoration:line-through; color:var(--c-text-muted)">¥178</span>
+        </div>
+        <div>
+          <small class="muted">Sell Price</small><br>
+          <span style="font-size:28px; font-weight:700">$24.50</span>
+          <select style="margin-left:4px;font-size:12px"><option>USD</option><option>EUR</option><option>GBP</option></select>
+        </div>
+        <div>
+          <small class="muted">≈ €22.30 / £19.10</small><br>
+          <span class="tag">MOQ: 50 pcs</span>
+        </div>
+      </div>
+      <small class="muted" style="display:block;margin-top:4px">💱 汇率来源：中国银行实时牌价 · 结算基准货币：USD</small>
+    </div>
+
+    <!-- Specs -->
+    <div class="box">
+      <h3>Specifications</h3>
+      <table>
+        <tr><td style="color:var(--c-text-muted)">Material</td><td>Semi-metallic</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Position</td><td>Front Axle</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Width × Height × Thickness</td><td>137 × 53 × 16 mm</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Stock</td><td>5,000+ pcs</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Warranty</td><td>12 months / 50,000 km</td></tr>
+        <tr><td style="color:var(--c-text-muted)">Return Policy</td><td>30-day return, buyer pays return shipping</td></tr>
+      </table>
+    </div>
+
+    <!-- CTA -->
+    <div class="btn-group" style="margin-top:8px">
+      <button class="btn btn-primary" style="flex:1; padding:12px">Send Inquiry</button>
+      <button class="btn" style="flex:1; padding:12px">Save for Later</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Vehicle Fitment ===== -->
+<div class="box" style="margin-top:24px">
+  <h3>Vehicle Fitment</h3>
+  <table>
+    <tr><th>Make</th><th>Model</th><th>Year</th><th>Engine</th><th>VIN Pattern</th></tr>
+    <tr><td>Toyota</td><td>Hilux</td><td>2015–2023</td><td>2.4L / 2.8L Diesel</td><td>MR0***</td></tr>
+    <tr><td>Toyota</td><td>Hilux</td><td>2011–2014</td><td>3.0L Diesel</td><td>MR0***</td></tr>
+    <tr><td>Toyota</td><td>Fortuner</td><td>2015–2023</td><td>2.8L Diesel</td><td>MR0***</td></tr>
+  </table>
+</div>
+
+<!-- ===== Supplier Card ===== -->
+<div class="box" style="margin-top:16px">
+  <div class="row">
+    <div class="col-2 stack">
+      <h3>ABC Auto Parts Co., Ltd.</h3>
+      <small class="muted">⭐ Verified Supplier · Joined 2025 · Guangzhou, China</small>
+      <p style="font-size:13px">Specializing in brake systems for Japanese vehicles. 15 years manufacturing experience. ISO 9001 certified.</p>
+    </div>
+    <div class="col box box-muted stack" style="text-align:center">
+      <div class="stat"><div class="num">850+</div><small class="muted">Products</small></div>
+      <a href="../supplier/04-profile.html" class="btn btn-sm">View Supplier Page</a>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Inquiry Form (collapsed placeholder) ===== -->
+<div class="box box-muted" style="margin-top:16px">
+  <h3>Send Inquiry to Supplier</h3>
+  <div class="row">
+    <div class="col">
+      <div class="form-group"><label>Your OEM / Reference Number</label><input type="text" placeholder="(optional)"></div>
+    </div>
+    <div class="col">
+      <div class="form-group"><label>Quantity Needed</label><input type="number" placeholder="e.g. 200"></div>
+    </div>
+  </div>
+  <div class="form-group"><label>Vehicle Info (VIN / Make-Model-Year)</label><input type="text" placeholder="e.g. JTEHT05JX02114563 or Toyota Hilux 2018"></div>
+  <div class="form-group"><label>Message / Additional Requirements</label><textarea placeholder="Any special requirements, target price, delivery timeline..."></textarea></div>
+  <div class="form-group"><label>Attach Photo / Document</label><input type="file" style="border:none;padding-left:0"> <small class="form-hint">jpg/png/pdf, max 5MB</small></div>
+  <button class="btn btn-primary">Submit Inquiry →</button>
+  <small class="muted" style="display:block;margin-top:4px">* Requires login</small>
+</div>
+
+<!-- ===== Inquiry Status (after submission) ===== -->
+<div class="box box-solid" style="margin-top:16px; border-color:var(--c-accent)">
+  <h3>📋 Inquiry #INQ-20260622-001 — Status: Supplier Confirmed</h3>
+  <p class="muted">Supplier ABC Auto Parts has confirmed they can fulfill this order.</p>
+  <table style="margin-top:8px">
+    <tr><td style="color:var(--c-text-muted);width:100px">Product</td><td>Brake Pad Set — Hilux × 200</td></tr>
+    <tr><td style="color:var(--c-text-muted)">OEM</td><td>04465-0K030</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Price</td><td>$24.50 / pc</td></tr>
+    <tr><td style="color:var(--c-text-muted)">Total</td><td><strong>$4,900.00</strong></td></tr>
+  </table>
+  <div class="btn-group" style="margin-top:12px">
+    <button class="btn btn-primary" style="padding:10px 32px">✅ 下单 — 转为正式订单</button>
+    <button class="btn" style="padding:10px 32px">❌ 取消询问</button>
+  </div>
+  <small class="muted" style="display:block;margin-top:4px">取消后询问记录保留，状态显示为"已取消"</small>
+</div>
+
+<div class="prototype-note">Buyer 03 · Product Detail — BUY-03/04/12</div>
+</body>
+</html>
