@@ -1,29 +1,38 @@
 # Issue 15: Inquiry → Order Conversion
 
-**Label**: `phase-2` `P0`
+**Labels**: `feat` `p0` `backend` `frontend` `ux` | **Milestone**: v1.0 | **Assignee**: nixiangdemei03
+
+---
+
+## 背景
+
+APEX 核心差异化：采购商先询问再下单。按 PRD §3 用户故事 BUY-04/12 和 §4.1 询问转单流程，实现询问→订单转换（下单/取消两个按钮）、inquiries 表完整 schema、两层消息系统（轻量 message + 重量 inquiry）。
+
+## 用户故事
+
+- 作为采购商（BUY-12），我想提交结构化询问（含 OEM、图片、车型信息），在供应商确认后可一键转为正式订单，以便先确认库存和价格再下单。
+- 作为采购商（BUY-04），我想给供应商发轻量消息，以便简单咨询。
+
+## 任务清单
+
+- [ ] inquiries 表完整 schema（inquiry_type: message/inquiry, status: open/replied/converted/cancelled）
+- [ ] `POST /api/inquiries` — buyer 发送询盘（区分 message / inquiry 类型）
+- [ ] `GET /api/inquiries` — 收/发件箱，按 type + status 筛选
+- [ ] `PATCH /api/inquiries/:id/read` — 标记已读
+- [ ] `POST /api/inquiries/:id/convert-to-order` — 仅 buyer + inquiry 类型，自动带入信息生成订单
+- [ ] `PATCH /api/inquiries/:id/cancel` — buyer/supplier 均可取消
+- [ ] 前端询问单界面含「下单」和「取消」两个按钮
+- [ ] 写 `test_inquiries.py`
 
 ## 验收标准
 
-- [ ] `POST /api/inquiries/:id/convert-to-order` — 询问转正式订单
-  - 仅 inquiry_type = `inquiry` 的询盘可转单
-  - 仅 buyer 可发起转单
-  - 自动带入询问中的 product_id、quantity、oem_number、vin
-  - 生成正式 order_number（APEX-YYYYMMDD-NNNN）
-  - 询问状态变为 `converted_to_order`，记录 converted_order_id
-- [ ] `PATCH /api/inquiries/:id/cancel` — 取消询问
-  - buyer 或 supplier 均可取消
-  - 状态变为 `cancelled`
-  - 双方端均保留询问记录
-- [ ] 询问单界面（前端）含两个按钮：
-  - 「下单」→ 调用 convert-to-order → 跳转至订单详情
-  - 「取消」→ 调用 cancel → 询问列表显示"已取消"
-- [ ] 取消后平台推荐同类产品（供应商拒绝时触发）
-- [ ] inquiries 表完整 schema（见 `docs/03-data-model.md`）
-- [ ] 所有端点测试通过
+- `POST /api/inquiries` type=inquiry → 201，含 OEM/VIN/图片字段
+- type=message → 201，仅文本字段
+- `POST /api/inquiries/:id/convert-to-order` → 生成 order_number，inquiry.status→converted_to_order
+- message 类型尝试转单 → 400
+- 取消后双方端均保留记录（status=cancelled）
+- 供应商拒绝 → 平台推荐同类产品
 
-## 关联
+## 相关
 
-- PRD BUY-12 询问订单流程
-- 前端原型：buyer/03-product-detail.html 询问表单
-- 数据模型见 `docs/03-data-model.md` inquiries 表
-- API 设计见 `docs/04-api-design.md` Inquiries 段
+- PRD §3：BUY-04/12 | PRD §4.1 询问转单流程 | 数据模型：`docs/03-data-model.md` inquiries 表 | 依赖：Issue 06（Orders）

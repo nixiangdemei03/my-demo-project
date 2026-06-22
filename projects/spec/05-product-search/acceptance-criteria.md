@@ -1,39 +1,38 @@
 # Issue 05: Product Search — VIN / OEM / Vehicle Browse
 
-**Label**: `phase-1` `P0`
+**Labels**: `feat` `p0` `backend` `ux` | **Milestone**: v1.0 | **Assignee**: nixiangdemei03
+
+---
+
+## 背景
+
+采购商需要三种方式找到配件：VIN 车架号搜索、OEM 编号精确查找、品牌→车型→年份逐级浏览。按 PRD §3 用户故事 BUY-09/10/11 和 §4.1 配件搜索流程实现。
+
+## 用户故事
+
+- 作为采购商（BUY-09），我想输入 VIN 搜索适配配件，以便精确找到我车型的配件。
+- 作为采购商（BUY-10），我想输入 OEM 编号或关键词搜索，以便快速定位特定部件。
+- 作为采购商（BUY-11），我想按品牌→车型→年份浏览，以便不熟悉 OEM 号也能找配件。
+
+## 任务清单
+
+- [ ] `GET /api/search?q=` — 全文搜索 name_zh/name_en/oem_number，支持组合筛选
+- [ ] `GET /api/search?oem=` — OEM 精确 + 部分匹配，大小写不敏感
+- [ ] `POST /api/search/vin` — vin_pattern 前缀匹配，命中/未命中双路径
+- [ ] `GET /api/search?make=&model=&year=` — 车型浏览
+- [ ] `GET /api/categories` — 层级类别树
+- [ ] 写 `test_search.py` 覆盖 7 个场景
 
 ## 验收标准
 
-### 文字搜索
-- [ ] `GET /api/search?q=刹车片`
-  - 全文搜索 name_zh, name_en, oem_number
-  - 支持组合参数：`&make=Toyota&model=Hilux&year=2020&category_id=X`
-  - 返回分页结果
-  - 空结果 → `{"data":[],"pagination":{"total":0}}`
+- `GET /api/search?q=刹车片` → 200 + 分页结果
+- 无匹配 → `{"data":[],"pagination":{"total":0}}`
+- `GET /api/search?oem=04465-0K090` 与 `?oem=04465-0k090` 结果一致
+- `?oem=04465` 匹配到 `04465-0K090` 和 `04465-0K120`
+- `POST /api/search/vin` 命中 → `{"matched":true,"vehicle":{...},"products":[...]}`
+- `POST /api/search/vin` 未命中 → `{"matched":false,"vin":"..."}`
+- `GET /api/categories` → 层级树，每节点含 name_zh/name_en/children
 
-### OEM 精确搜索
-- [ ] `GET /api/search?oem=04465-0K090`
-  - 精确匹配 oem_number 字段
-  - 大小写不敏感
-  - 支持部分匹配（如 `04465` 匹配 `04465-0K090` 和 `04465-0K120`）
+## 相关
 
-### VIN 搜索
-- [ ] `POST /api/search/vin`
-  - 入参：`{"vin":"JTELV71J800012345"}`
-  - 用 `vin_pattern` 前缀匹配 `product_vehicle_fits` 表
-  - 命中 → 返回 `{"matched":true,"vehicle":{"make":"Toyota","model":"Land Cruiser Prado",...},"products":[...]}`
-  - 未命中 → 返回 `{"matched":false,"vin":"JTELV71J8..."}`（后续透传询问订单）
-
-### 车型浏览
-- [ ] `GET /api/search?make=Toyota&model=Hilux&year=2020`
-  - 通过 product_vehicle_fits 筛选产品
-  - 支持只传 make（返回该品牌所有适配产品）
-
-### 类别树
-- [ ] `GET /api/categories` — 返回层级类别树
-  ```json
-  [{"id":"...","name_zh":"制动系统","name_en":"Brake System","children":[...]},...]
-  ```
-
-### 测试
-- [ ] `test_search.py` 覆盖：中文搜索、OEM 精确匹配、OEM 部分匹配、VIN 命中、VIN 未命中、车型筛选、空结果
+- PRD §3：BUY-09/10/11 | PRD §4.1 配件搜索流程 | 依赖：Issue 04（Products）

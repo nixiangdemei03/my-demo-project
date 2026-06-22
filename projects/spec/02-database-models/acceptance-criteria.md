@@ -1,17 +1,35 @@
 # Issue 02: PostgreSQL + Database Models
 
-**Label**: `phase-1` `P0`
+**Labels**: `feat` `p0` `backend` `infra` | **Milestone**: v1.0 | **Assignee**: nixiangdemei03
+
+---
+
+## 背景
+
+APEX 需要持久化存储。按 Data Model（`docs/03-data-model.md`）建 5 张核心表 + Alembic 迁移，支撑用户注册、产品上架、订单管理。对应 PRD §3 用户故事 SUP-01/02、BUY-01/05。
+
+## 用户故事
+
+作为开发者，我想有版本化的数据库 schema，以便所有 API 都能读写持久化数据，且 schema 变更有迹可循。
+
+## 任务清单
+
+- [ ] PostgreSQL 数据库创建，连接串写入 `backend/.env`
+- [ ] SQLAlchemy 2.0 + asyncpg 异步引擎配置
+- [ ] 定义 5 张核心表 ORM 模型（users, products, categories, orders, product_vehicle_fits）
+- [ ] Alembic 初始化 + 首次 migration
+- [ ] `alembic upgrade head` 建表成功
+- [ ] 写 `backend/.env.example` 含 `DATABASE_URL` 模板
+- [ ] 连接失败时输出明确错误日志
 
 ## 验收标准
 
-- [ ] PostgreSQL 数据库创建完成，连接串写入 `backend/.env`
-- [ ] SQLAlchemy 2.0 + asyncpg 配置，异步引擎可用
-- [ ] Alembic 初始化，首次 `alembic upgrade head` 成功
-- [ ] 5 张核心表建表通过：
-  - `users`（id UUID PK, email UNIQUE, password_hash, role, company_name, contact_name, phone, country, language, verified, created_at, updated_at）
-  - `products`（id UUID PK, supplier_id FK→users, category_id FK→categories, name_zh, name_en, oem_number, description_zh, description_en, original_price DECIMAL, sell_price DECIMAL, moq, stock, specs JSONB, status, created_at, updated_at）
-  - `categories`（id UUID PK, name_zh, name_en, parent_id FK→categories, sort_order）
-  - `orders`（id UUID PK, order_number UNIQUE, buyer_id FK→users, supplier_id FK→users, product_id FK→products, quantity, unit_price, total_price, currency, status, payment_status, cancel_reason, notes, created_at, updated_at）
-  - `product_vehicle_fits`（id UUID PK, product_id FK→products, make, model, year_start, year_end, engine, vin_pattern）
-- [ ] `backend/.env.example` 含 `DATABASE_URL` 模板
-- [ ] 数据库连接失败时有明确错误日志
+- `alembic upgrade head` 后在 PostgreSQL 中可查到 5 张表
+- users.email 含 UNIQUE 约束
+- products.supplier_id → users.id 外键生效
+- categories.parent_id → categories.id 自引用外键生效
+- `backend/.env.example` 含 `DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/apex`
+
+## 相关
+
+- PRD §3：SUP-01/02、BUY-01/05 | 数据模型：`docs/03-data-model.md` | 依赖：Issue 01

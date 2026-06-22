@@ -1,40 +1,35 @@
-# Issue 08: Supplier Page + Tax Verification + Warranty Policy
+# Issue 08: Supplier Page + Manual Verification + Warranty Policy
 
-**Label**: `phase-1` `P0`
+**Labels**: `feat` `p0` `backend` `frontend` `ux` | **Milestone**: v1.0 | **Assignee**: nixiangdemei03
+
+---
+
+## 背景
+
+供应商需要展示主页以建立采购商信任。按 PRD §3 用户故事 SUP-09/10 和 §4.1 供应商上架流程，实现供应商详情 API、主页模板、人工资质审核。v1.0 使用人工审核（营业执照 + 实店照片 + 销售许可证），不接入天眼查 OCR。
+
+## 用户故事
+
+- 作为供应商（SUP-09），我想使用固定模板搭建主页（Logo、公司介绍、资质证书、联系方式），以便采购商信任我的公司。
+- 作为供应商（SUP-10），我想在产品页写明保修期和退换政策，以便减少售后纠纷。
+- 作为管理员（ADM-01），我想人工审核供应商上传的证照，以便防止虚假供应商入驻。
+
+## 任务清单
+
+- [ ] `GET /api/suppliers/:id` — 返回公司信息、Logo、资质缩略图、产品数、主营品牌
+- [ ] 注册时接受额外字段：Logo、公司介绍、主营品牌、资质证书上传、联系方式
+- [ ] 管理员审核队列：查看证照 → Approve / Reject / Request More Info
+- [ ] supplier_documents 表 verify_status：pending / approved / rejected
+- [ ] 产品表单含 warranty 和 return_policy 字段
+- [ ] 写 `test_supplier.py` 覆盖详情查询、审核状态流转、保修字段
 
 ## 验收标准
 
-### 供应商详情 API
-- [ ] `GET /api/suppliers/:id`
-  - 返回：company_name, contact_name, country, verified, created_at
-  - Logo URL（product_images 中首张）
-  - 资质证书列表（supplier_documents 缩略图）
-  - 已上架产品数、主营品牌
-  - 公司介绍（description）
+- `GET /api/suppliers/:id` → 含 company_name、logo_url、description、main_brands、verified、product_count
+- 资质文件上传后 verify_status=pending → 管理员 Approve → verified=true
+- Reject 需附 review_note 原因
+- 产品详情页展示保修期和退换政策（从 products.warranty / return_policy 读取）
 
-### 供应商主页模板（注册时）
-- [ ] `POST /api/auth/register` 时接受额外字段：
-  - Logo 上传（1 张，jpg/png）
-  - 公司介绍（TEXT）
-  - 主营品牌（多选，如 Toyota/Honda/Nissan/BMW/...）
-  - 资质证书上传（多图：营业执照、出口资质、实体店照片、第三方公证书）
-  - 联系方式（电话、邮箱、地址）
+## 相关
 
-### 税号 OCR 验证
-- [ ] 营业执照上传后自动 OCR 提取：
-  - 统一社会信用代码
-  - 公司名称
-- [ ] 调用天眼查/企查查 API 匹配企业名（¥0.1/次）
-  - 匹配成功 → verified = true, verify_status = matched
-  - 匹配失败 → verified = false, verify_status = mismatch → 标记人工审核
-- [ ] supplier_documents 表 ocr_data JSONB 存储提取结果
-- [ ] verify_status 枚举：pending / matched / mismatch / manual_review
-
-### 保修/退换政策
-- [ ] 产品创建/编辑表单含：
-  - warranty_period（保修期，如"12个月"）
-  - return_policy（退换政策，TEXT）
-- [ ] 产品详情页对采购商展示保修/退换政策
-
-### 测试
-- [ ] `test_supplier.py` 覆盖：供应商详情查询、OCR 提取（mock API）、验证状态流转、保修政策字段
+- PRD §3：SUP-09/10、ADM-01 | PRD §4.1 供应商上架流程 | 依赖：Issue 03（Auth）
