@@ -13,4 +13,4 @@ GitHub CLI:  2.94.0
 codragraph:  2.1.6              ✅ 已安装
 superpowers: 5.1.0              ✅ 已安装 (plugin)
 gstack-browser: 已安装           ✅ npm i -g gstack-browser + playwright chromium
-spec-kit (specify): 0.11.3.dev0 ✅ uv tool install
+spec-kit (specify): 0.11.3.dev0 ✅ uv tool install → specify-cn 别名已创建 (specify-cn.cmd)

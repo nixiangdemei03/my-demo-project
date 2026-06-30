@@ -10,13 +10,47 @@
 
 ## Auth — `/api/auth`
 
+### 认证机制
+
+- JWT 签名后通过 `Set-Cookie` 写入 httpOnly Cookie（前端不可读，浏览器自动携带）
+- Access Token：`access_token` Cookie，15min 有效
+- Refresh Token：`refresh_token` Cookie，7d 有效，DB 存 SHA-256 哈希用于验证+撤销
+- CSRF Token：`csrf_token` Cookie（非 httpOnly，JS 可读），修改操作须在 `X-CSRF-Token` header 中携带
+
+### 端点
+
 | 方法 | 路径 | 说明 | 鉴权 |
 |------|------|------|:--:|
-| POST | `/api/auth/register` | 用户注册 | - |
-| POST | `/api/auth/login` | 登录，返回 JWT | - |
-| POST | `/api/auth/refresh` | 刷新令牌 | Refresh Token |
+| POST | `/api/auth/register` | 用户注册（邮箱 + 密码），发送验证邮件 | - |
+| GET | `/api/auth/verify-email?token=xxx` | 邮箱验证（一次性链接，10 分钟有效） | - |
+| POST | `/api/auth/login` | 登录 → 验证密码 → Set-Cookie: access_token + refresh_token + csrf_token，响应体仅返回 user | - |
+| POST | `/api/auth/refresh` | 刷新 Access Token（浏览器自动带 refresh_token Cookie） | Refresh Token |
+| POST | `/api/auth/logout` | 登出 → 清空三个 Cookie + DB 标记 refresh_token revoked | JWT |
 | GET | `/api/auth/me` | 当前用户信息 | JWT |
 | PUT | `/api/auth/me` | 更新个人信息 | JWT |
+
+### 登录响应示例
+
+```json
+// 响应体（不含 token，token 在 Set-Cookie 中）
+{"data": {"user": {"id":"...","email":"a@b.com","role":"supplier","company_name":"..."}}}
+
+// 响应头
+// Set-Cookie: access_token=<jwt>; HttpOnly; Secure; SameSite=Lax; Path=/; Max-Age=900
+// Set-Cookie: refresh_token=<jwt>; HttpOnly; Secure; SameSite=Lax; Path=/api/auth; Max-Age=604800
+// Set-Cookie: csrf_token=<random>; Secure; SameSite=Lax; Path=/
+```
+
+### 登出响应示例
+
+```json
+{"data": {"ok": true}}
+
+// 响应头
+// Set-Cookie: access_token=; Max-Age=0
+// Set-Cookie: refresh_token=; Max-Age=0
+// Set-Cookie: csrf_token=; Max-Age=0
+```
 
 ## Products — `/api/products`
 

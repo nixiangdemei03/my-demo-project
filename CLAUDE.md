@@ -16,11 +16,13 @@
 - 🖼️ **图片管理** — 多图上传、排序、封面设置，存储至 Cloudflare R2
 
 ## Tech stack
-- Backend: FastAPI + PostgreSQL + SQLAlchemy + Alembic
+- Backend: Hono (TypeScript) on Cloudflare Workers
+- Database: Cloudflare D1 (SQLite) + Drizzle ORM + Drizzle Kit
 - Frontend: React + Vite + React Router v6
 - Storage: Cloudflare R2 (product images)
-- Auth: JWT (python-jose + passlib/bcrypt)
-- Deploy: Cloudflare Pages + Workers
+- Auth: JWT (jose + bcryptjs), Workers Web Crypto API
+- Email: MailChannels + Workers (free email verification)
+- Deploy: Cloudflare Pages + Workers (free tier)
 
 ## Project structure
 - `projects/apex-app/` — 主项目（backend + frontend）

@@ -53,7 +53,7 @@
 
 | ID | 作为供应商，我想…… | 以便…… | 优先级 |
 |----|------|------|:--:|
-| SUP-01 | 用中文注册账号、上传公司资质 | 通过审核后开始销售 | P0 |
+| SUP-01 | 用邮箱注册账号、上传公司资质 | 通过审核后开始销售 | P0 |
 | SUP-02 | 创建产品（中/英名称、类别、OEM、CNY 原价、USD 售价、规格、图片） | 采购商能搜索到我的产品 | P0 |
 | SUP-03 | 管理库存（增减数量、下架产品） | 避免超卖 | P0 |
 | SUP-04 | 查看收到的订单、确认/拒绝 | 及时处理采购需求 | P0 |
@@ -125,11 +125,13 @@
 **供应商上架流程**：
 
 ```
-注册 → 上传资质文件（营业执照、实体店照片、销售许可证扫描件/照片）
+邮箱注册 → 收邮件验证链接 → 激活账号 → 上传资质文件（营业执照、实体店照片、销售许可证扫描件/照片）
   → 进入人工审核队列 → 管理员审核证照真实性与一致性
   → 审核通过 → verified = true → 创建产品(绑定车型适配) → 上架
   → 审核不通过 → 附原因退回，供应商可重新提交
 ```
+
+> 邮箱验证通过 MailChannels + Cloudflare Workers 免费发送，邮件中包含 10 分钟有效的一次性验证链接。
 
 > v1.0 不接入天眼查 OCR 自动验证。人工审核是主路径，后期可接入工商 API 做预填辅助。
 
@@ -251,7 +253,7 @@ API：退款相关端点预留占位（/api/refunds），v1.0 为模拟 API
 |:--:|-------|:--:|------|
 | 1 | Scaffolding | 1 | FastAPI hello + React + Vite proxy + make dev |
 | 2 | DB Models | 1 | 5 核心表 + Alembic migration |
-| 3 | User Auth | 1 | JWT 注册/登录/刷新 + bcrypt + 邮箱验证 |
+| 3 | User Auth | 1 | Cookie-based JWT 注册/登录/刷新/登出 + bcrypt + 邮箱验证 + CSRF |
 | 4 | Product CRUD | 1 | 产品 CRUD + R2 图片上传 + 车型适配绑定 |
 | 5 | Search | 1 | VIN/OEM/文字搜索 + 类别树 |
 | 6 | Order API | 2 | 订单创建 + 状态流转 + 24h 超时取消 |
@@ -269,25 +271,36 @@ API：退款相关端点预留占位（/api/refunds），v1.0 为模拟 API
 
 ### 4.3 技术栈
 
+> 全栈基于 Cloudflare 免费套餐，零服务器成本上线。
+
 | 层 | 技术 | 理由 |
 |----|------|------|
-| Backend | FastAPI | 异步支持、自动 OpenAPI 文档、Pydantic 校验 |
-| ORM | SQLAlchemy 2.0 + asyncpg | 异步数据库操作 |
-| Auth | JWT (python-jose + passlib/bcrypt) | 无状态认证，Access 30min / Refresh 7d |
-| Frontend | React 18 + Vite 5 | 快速 HMR，proxy 一键联调 |
+| Backend | **Hono** (TypeScript) | FastAPI 风格路由，原生支持 Cloudflare Workers |
+| Database | **Cloudflare D1** | 免费 5GB / 500 万读行/天 / 100 万写行/天，SQLite 兼容 |
+| ORM | **Drizzle ORM** | TypeScript-first，原生支持 D1，类 SQL 语法 |
+| 校验 | **Zod** | 端到端类型安全，与 Hono 深度集成 |
+| Auth | JWT (**jose** + **bcryptjs**) → httpOnly Cookie | Workers Web Crypto API，Set-Cookie 写入（JS 不可读），Access 15min / Refresh 7d，浏览器自动携带 |
+| 邮件 | **MailChannels** + Workers | 免费发送邮箱验证邮件 |
+| Migration | **Drizzle Kit** | Drizzle 自带迁移工具 |
+| Frontend | React 18 + Vite 5 | 快速 HMR，构建速度快 |
 | Storage | Cloudflare R2 | S3 兼容、零出站费 |
-| Deploy | Cloudflare Pages + Workers | 全球 CDN |
+| Deploy | Cloudflare Pages + Workers | 全球 CDN、免费额度覆盖 MVP |
+
+> **与旧版差异**：FastAPI (Python) → Hono (TypeScript)，PostgreSQL → D1 (SQLite)，SQLAlchemy → Drizzle ORM，Pydantic → Zod，python-jose → jose。变更原因为 Cloudflare Workers 不支持 Python 运行时，且 D1 是 Cloudflare 生态唯一的免费数据库。
 
 ### 4.4 安全设计
 
 | 区域 | 措施 |
 |------|------|
-| 密码 | bcrypt 哈希，最小 8 位，必须含字母+数字 |
-| JWT | Access Token 30min，Refresh Token 7d |
-| API 鉴权 | 中间件验证 JWT，失败返回 401 |
+| 密码 | bcryptjs 哈希，最小 8 位，必须含字母+数字 |
+| JWT | jose 签名 (HS256)，Workers Web Crypto API，Access Token 15min / Refresh Token 7d |
+| Token 传输 | httpOnly Cookie（JS 不可读），浏览器自动携带，前端无需管理 token |
+| CSRF | `SameSite=Lax` + 修改操作校验 `X-CSRF-Token` |
+| 邮箱验证 | 注册必须验证邮箱，MailChannels 发送 10 分钟有效一次性链接 |
+| API 鉴权 | Hono 中间件读 Cookie 中 access_token，失败返回 401 |
 | 数据所有权 | 供应商只能编辑自己的产品；采购商看自己的订单 |
 | 图片上传 | 类型白名单 (jpg/png/webp)，最大 5MB |
-| CORS | 仅允许生产域名 + localhost:5173 |
+| CORS | 同域部署 `/api/*`，无需额外 CORS 配置 |
 | XSS | React 默认转义 + CSP Header |
 
 ---
@@ -305,6 +318,146 @@ API：退款相关端点预留占位（/api/refunds），v1.0 为模拟 API
 | 7 | **多币种汇率波动** — 实时汇率变化可能导致采购商看到的 USD 价格和实际结算价不一致 | 低 | 🟢 有方案 | 建议每日固定汇率（中国银行牌价），避免实时波动纠纷 |
 | 8 | **Payment webhook 伪造** — 接入真实支付网关时必须验证 webhook 签名 | 中 | 🟡 已知 | 届时按 Stripe/PayPal 文档加签名验证 |
 | 9 | **推流奖励公式 TBD** — VIN 数据贡献和低销推流的具体算法未定义 | 低 | 🟢 延后 | Phase 2 末期定义 |
+| 10 | **D1 SQLite 兼容性** — 无 JSONB/DECIMAL/ENUM 类型，原 PostgreSQL 数据模型需适配 | 中 | 🟡 已知 | TEXT 存 JSON（D1 有 JSON 函数），INTEGER 存金额（分），VARCHAR + 应用层 CHECK 替代 ENUM |
+| 11 | **Workers 冷启动延迟** — 免费版 Worker 平均冷启动 ~50ms | 低 | 🟢 可接受 | B2B 非高频场景影响小，API 响应延迟仍在可接受范围 |
+| 12 | **MailChannels 免费额度变更** | 低 | 🟢 有备选 | 备选 Resend（100 封/天）或 Brevo（300 封/天），均为免费层 |
+
+---
+
+---
+## 6. 最小版本 (MVP) 定义
+
+> **原则**：先做"能跑通的骨架"，再做"完整的闭环"。MVP 分两阶段交付——第一阶段上线产品目录（供应商能上架、采购商能搜），第二阶段上线交易链路（能下单、能发货、能追踪）。
+
+### 6.1 MVP-1：产品目录（Phase 1，Week 1-2）
+
+**一句话**：供应商能注册、上架产品；采购商能注册、搜索浏览产品。
+
+| 维度 | 内容 |
+|------|------|
+| **Issue** | #1 Scaffolding · #2 DB Models · #3 User Auth · #4 Product CRUD · #5 Search · #8 Supplier Page · #9 Frontend Catalog · #10 Supplier Dashboard |
+| **涉及用户故事** | SUP-01/02/03/06/09/10 · BUY-01/02/03/09/10/11 · ADM-01 |
+
+**核心用户路径**：
+
+```
+🏭 供应商：
+  注册 → 上传资质 → 管理员审核 → 创建产品(含图片/车型适配) → 上架 → 管理库存
+
+🌍 采购商：
+  注册 → 浏览首页 → VIN/OEM/文字/车型浏览 搜索 → 查看产品详情 → 查看供应商主页
+
+🔧 管理员：
+  审核供应商资质(通过/退回)
+```
+
+**MVP-1 交付物清单**：
+
+| 模块 | 具体功能 | 状态 |
+|------|---------|:--:|
+| 脚手架 | FastAPI + React + Vite + `make dev` 联调 | P0 |
+| 数据库 | 5 核心表 + Alembic migration | P0 |
+| 用户系统 | Cookie-based JWT 注册/登录/刷新/登出 + bcrypt + 邮箱验证 + CSRF | P0 |
+| 产品 CRUD | 创建/编辑/删除/列表 + R2 图片上传 + 车型适配绑定 | P0 |
+| 搜索 | VIN 前缀匹配 + OEM/文字全文搜索 + 类别树车型浏览 | P0 |
+| 供应商主页 | 模板化主页(Logo/介绍/资质/联系方式) + 审核 API | P0 |
+| 前端目录 | 首页(搜索入口) · 搜索结果页 · 产品详情页 · 供应商页 · 登录/注册页 | P0 |
+| 供应商后台 | 产品管理(列表/新增/编辑) · 订单管理(占位) · 主页编辑 | P0 |
+
+**MVP-1 明确不做**：
+
+| 不做 | 原因 |
+|------|------|
+| 订单创建/状态流转 | 属于 MVP-2 |
+| 货运公司/发货/追踪 | 属于 MVP-2 |
+| 采购商下单/支付 | 属于 MVP-2 |
+| 询问订单/站内消息 | 属于 MVP-2 |
+| 管理后台统计/类别管理 | 属于 v1.0 完整版 |
+| 通知系统 | 属于 v1.0 完整版 |
+
+---
+
+### 6.2 MVP-2：交易闭环（Phase 2，Week 3-4）
+
+**一句话**：在 MVP-1 基础上，采购商能下单、支付、追踪物流；供应商能接单、发货。
+
+| 维度 | 内容 |
+|------|------|
+| **Issue** | #6 Order API · #7 Freight · #11 Buyer Dashboard · #13 Payment & Settlement · #14 Refund Flow · #15 Inquiry→Order |
+| **涉及用户故事** | SUP-04/05/07 · BUY-04/05/06/07/12 |
+
+**核心用户路径**：
+
+```
+🌍 采购商：
+  浏览产品 → 提交询问订单(含 OEM/图片/车型) → 供应商确认 → 转正式订单
+  → 支付(占位 API) → 查看订单状态 → 追踪货运
+
+🏭 供应商：
+  查看收到的订单 → 确认/拒绝 → 收到支付确认 → 选择货运公司 + 填运单号 → 发货
+  → 查看物流追踪状态
+```
+
+**MVP-2 交付物清单**：
+
+| 模块 | 具体功能 | 状态 |
+|------|---------|:--:|
+| 订单管理 | 创建/查询列表/状态流转(待确认→已确认→已发货→已收货) + 24h 超时自动取消 | P0 |
+| 货运对接 | 货运公司 CRUD + 发货关联运单号 + 追踪事件更新与展示 | P0 |
+| 采购商后台 | 订单列表/详情 + 支付收银台(占位 API) + 货运追踪 + 询问历史 | P0 |
+| 支付结算 | 统一收银台占位 API + webhook 回调更新状态 + 月度结算逻辑 | P0 |
+| 询问转单 | 结构化询问表单(含 OEM/图片/车型) → 供应商确认 → 一键转正式订单 | P0 |
+| 退款流程 | 退款申请/供应商处理/结算扣减(占位 API) | P0 |
+
+**MVP-2 明确不做**：
+
+| 不做 | 原因 |
+|------|------|
+| 真实支付网关对接 | 商务推进中，先用占位 API |
+| 货运公司 API 自动追踪 | 初期手动更新追踪事件 |
+| 管理后台(除审核外) | 属于 v1.0 完整版 |
+| 通知推送 | 属于 v1.0 完整版 |
+
+---
+
+### 6.3 v1.0 完整版（Phase 3，Week 5-6）
+
+| 维度 | 内容 |
+|------|------|
+| **Issue** | #12 Admin Dashboard + 通知系统 + 国际化 + 部署 |
+| **涉及用户故事** | SUP-08 · ADM-02/03/04/05/06 |
+
+**交付物**：管理后台(统计看板/类别管理/货运管理/订单全局视图) · 邮件通知(注册验证/订单状态/催付) · 前端英文版 · Cloudflare Pages + Workers 部署
+
+---
+
+### 6.4 MVP 交付节奏总览
+
+```
+ Week 1 ─────── Week 2 ─────── Week 3 ─────── Week 4 ─────── Week 5-6
+├─ Phase 1 ─────────────┤├─ Phase 2 ─────────────┤├─ Phase 3 ──────┤
+│                        │                        │                 │
+│ MVP-1: 产品目录        │ MVP-2: 交易闭环        │ v1.0 完整版     │
+│ • 注册/认证            │ • 订单创建/状态流转    │ • 管理后台      │
+│ • 产品上架/管理        │ • 货运发货/追踪        │ • 通知系统      │
+│ • VIN/OEM/车型搜索     │ • 支付占位+结算逻辑    │ • 国际化 + 部署 │
+│ • 前端浏览体验         │ • 询问转单             │                 │
+│ • 供应商主页           │ • 退款流程占位         │                 │
+│                        │                        │                 │
+│ 能搜、能看、能上架     │ 能下单、能支付、能追踪 │ 能运营、能上线  │
+└────────────────────────┴────────────────────────┴─────────────────┘
+
+P0 用户故事覆盖：
+  MVP-1: 13/20 (65%)      MVP-2: 19/20 (95%)      v1.0: 20/20 (100%)
+```
+
+### 6.5 MVP 度量标准
+
+| 里程碑 | 硬性标准 |
+|--------|---------|
+| **MVP-1 完成** | 供应商能注册→审核→上架产品；采购商能注册→搜索→浏览产品详情 |
+| **MVP-2 完成** | 完整交易闭环：搜索→询问→下单→支付(占位)→发货→追踪→收货 |
+| **v1.0 上线** | 管理后台可用 + 前端部署至 Cloudflare Pages + P0 端点测试 100% 通过 |
 
 ---
 

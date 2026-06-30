@@ -1,5 +1,7 @@
 # APEX — 数据模型
 
+> **D1 兼容性说明**：D1 基于 SQLite，不支持 JSONB、DECIMAL、ENUM 类型。金额字段用 INTEGER 存分、JSON 字段用 TEXT、枚举字段用 VARCHAR + 应用层约束替代。
+
 ## ER 关系
 
 ```
@@ -26,11 +28,12 @@ users 1──N settlements (buyer)   settlements per buyer
 |------|------|------|
 | id | UUID PK | |
 | email | VARCHAR(255) UNIQUE | 登录邮箱 |
-| password_hash | VARCHAR(255) | bcrypt |
+| email_verified | BOOLEAN | 邮箱已验证，默认 false |
+| password_hash | VARCHAR(255) | bcryptjs |
 | role | VARCHAR(20) | supplier / buyer / admin |
 | company_name | VARCHAR(255) | 公司名称 |
 | contact_name | VARCHAR(100) | 联系人 |
-| phone | VARCHAR(50) | |
+| phone | VARCHAR(50) | 可选联系方式，不做验证 |
 | country | VARCHAR(100) | 采购商所在国 |
 | language | VARCHAR(10) | zh / en，默认 zh |
 | verified | BOOLEAN | 供应商审核状态 |
@@ -53,11 +56,11 @@ users 1──N settlements (buyer)   settlements per buyer
 | oem_number | VARCHAR(100) | OEM 编号 |
 | description_zh | TEXT | |
 | description_en | TEXT | |
-| original_price | DECIMAL(12,2) | 国内原价 CNY |
-| sell_price | DECIMAL(12,2) | 出口售价 USD |
+| original_price | INTEGER | 国内原价 CNY，存储分（如 ¥123.45 → 12345） |
+| sell_price | INTEGER | 出口售价 USD，存储分（如 $12.99 → 1299） |
 | moq | INT | 最小起订量 |
 | stock | INT | 库存 |
-| specs | JSONB | 规格键值对 |
+| specs | TEXT | 规格键值对，存 JSON 字符串（D1 有 json_extract 等函数） |
 | warranty | VARCHAR(200) | 保修期（如 "12 months / 50,000 km"） |
 | return_policy | VARCHAR(200) | 退换政策（如 "30-day return, buyer pays return shipping"） |
 | status | VARCHAR(20) | active / inactive / deleted |
@@ -73,8 +76,8 @@ users 1──N settlements (buyer)   settlements per buyer
 | supplier_id | UUID FK → users | |
 | product_id | UUID FK → products | |
 | quantity | INT | > 0 |
-| unit_price | DECIMAL(12,2) | 下单时单价 |
-| total_price | DECIMAL(12,2) | |
+| unit_price | INTEGER | 下单时单价，存储分 |
+| total_price | INTEGER | 订单总价，存储分 |
 | currency | VARCHAR(3) | 默认 USD |
 | status | VARCHAR(20) | pending→confirmed→paid→shipped→delivered→cancelled |
 | payment_status | VARCHAR(20) | unpaid / paid / verified，默认 unpaid |
@@ -94,7 +97,7 @@ users 1──N settlements (buyer)   settlements per buyer
 | contact_person | VARCHAR(100) | |
 | phone | VARCHAR(50) | |
 | email | VARCHAR(255) | |
-| shipping_routes | JSONB | ["China-US","China-EU","China-SEA"] |
+| shipping_routes | TEXT | JSON 数组字符串 ["China-US","China-EU","China-SEA"] |
 
 ### shipments
 | 字段 | 类型 | 说明 |
@@ -124,7 +127,7 @@ users 1──N settlements (buyer)   settlements per buyer
 - `order_timeline` — 订单状态变更记录
 - `supplier_documents` — 供应商资质文件（supplier_id, doc_type, file_url, verify_status, review_note, reviewed_by, verified_at）
 - `inquiries` — 询盘消息
-- `refresh_tokens` — JWT Refresh Token
+- `refresh_tokens` — JWT Refresh Token（user_id, token_hash, expires_at, revoked, created_at）
 
 ### supplier_documents（资质文件）
 
@@ -160,7 +163,7 @@ users 1──N settlements (buyer)   settlements per buyer
 | id | UUID PK | |
 | order_id | UUID FK → orders | |
 | payer_id | UUID FK → users | 采购商 |
-| amount | DECIMAL(12,2) | 支付金额 |
+| amount | INTEGER | 支付金额，存储分 |
 | currency | VARCHAR(3) | USD / EUR / GBP |
 | payment_method | VARCHAR(50) | stripe / paypal / alipay |
 | gateway_tx_id | VARCHAR(255) | 支付网关返回的交易 ID |
@@ -177,10 +180,10 @@ users 1──N settlements (buyer)   settlements per buyer
 | user_role | VARCHAR(20) | supplier / buyer / platform |
 | period_start | DATE | 结算周期起始 |
 | period_end | DATE | 结算周期结束 |
-| total_sales | DECIMAL(12,2) | 周期内总销售额 |
-| platform_fee | DECIMAL(12,2) | 平台抽成 |
-| refunds_deducted | DECIMAL(12,2) | 退款扣减 |
-| net_payout | DECIMAL(12,2) | 实际到账 |
+| total_sales | INTEGER | 周期内总销售额，存储分 |
+| platform_fee | INTEGER | 平台抽成，存储分 |
+| refunds_deducted | INTEGER | 退款扣减，存储分 |
+| net_payout | INTEGER | 实际到账，存储分 |
 | status | VARCHAR(20) | pending / confirmed / paid |
 | generated_at | TIMESTAMPTZ | 结算单生成时间 |
 | confirmed_at | TIMESTAMPTZ | 供应商确认时间 |
@@ -200,8 +203,23 @@ users 1──N settlements (buyer)   settlements per buyer
 | oem_number | VARCHAR(100) | OEM 编号（inquiry 类型） |
 | vin | VARCHAR(17) | 车架号（inquiry 类型） |
 | quantity | INT | 需求数量 |
-| image_urls | JSONB | 需求图片 URL 数组 |
+| image_urls | TEXT | 需求图片 URL 数组，JSON 字符串 |
 | status | VARCHAR(20) | open / replied / converted_to_order / cancelled |
 | converted_order_id | UUID FK → orders | 询盘转单后的订单 ID |
 | read_at | TIMESTAMPTZ | |
 | created_at | TIMESTAMPTZ | |
+
+### refresh_tokens（JWT Refresh Token）
+
+| 字段 | 类型 | 说明 |
+|------|------|------|
+| id | UUID PK | |
+| user_id | UUID FK → users | 所属用户 |
+| token_hash | VARCHAR(255) | SHA-256 哈希（Cookie 中存 JWT 原文，DB 只存哈希用于验证合法性） |
+| expires_at | TIMESTAMPTZ | 过期时间（默认 created_at + 7d） |
+| revoked | BOOLEAN | 是否已撤销，默认 false |
+| created_at | TIMESTAMPTZ | |
+
+> **为什么存 token_hash**：Refresh Token 实际值只在 httpOnly Cookie 中传输，DB 存 SHA-256 哈希。验证刷新请求时，对 Cookie 中的 token 做哈希 → 与 DB 比对。这样即使 DB 泄露，攻击者也无法伪造 refresh_token。
+
+> **撤销场景**：用户改密码 → 该用户所有 refresh_tokens 标记 revoked=true；管理员封禁用户同理。
